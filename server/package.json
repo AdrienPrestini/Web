@@ -19,5 +19,12 @@
   "bugs": {
     "url": "https://github.com/AdrienPrestini/Web/issues"
   },
-  "homepage": "https://github.com/AdrienPrestini/Web#readme"
+  "homepage": "https://github.com/AdrienPrestini/Web#readme",
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^5.0.2"
+  }
 }
