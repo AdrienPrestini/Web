@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server side of the SI5 Web course project ",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdrienPrestini/Web.git"
+  },
+  "keywords": [
+    "server",
+    "accident"
+  ],
+  "author": "Kevin Duglue & Gaspard Lacroix",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdrienPrestini/Web/issues"
+  },
+  "homepage": "https://github.com/AdrienPrestini/Web#readme",
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^5.0.2"
+  }
+}
