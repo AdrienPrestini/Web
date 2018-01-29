@@ -12,7 +12,7 @@ const url = 'mongodb://localhost:27017';
 // Database Name
 const dbName = 'projetWeb';
 
-module.exports.getAllAccidents = function() {
+exports.getAllAccidents = function() {
     return new Promise((resolve, reject) => {
         MongoClient.connect(url, function(err, client) {
             if(err)
