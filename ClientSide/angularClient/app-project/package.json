@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "code" : "ng serve --host 192.168.43.142 --ssl 1 -ssl key \".\\node_modules\\browser-sync\\certs\\server.key\" --ssl-cert \"node_modules\\browser-sync\\certs\\server.crt\"",
+    "code": "ng serve --host 192.168.43.142 --ssl 1 -ssl key \".\\node_modules\\browser-sync\\certs\\server.key\" --ssl-cert \"node_modules\\browser-sync\\certs\\server.crt\"",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
+    "@types/googlemaps": "^3.30.5",
     "bootstrap": "^4.0.0-alpha.6",
     "browser-sync": "^2.23.6",
     "core-js": "^2.4.1",

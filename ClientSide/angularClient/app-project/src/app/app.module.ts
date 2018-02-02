@@ -21,7 +21,8 @@ import { FooterComponent } from './footer/footer.component';
     CommonModule,
     FormsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyC4X1tSatj9uOJbHGmbpB0Q916JMuTFV1I'
+      apiKey: 'AIzaSyC4X1tSatj9uOJbHGmbpB0Q916JMuTFV1I',
+      libraries: ['places']
     }),
     CollapseModule
   ],
