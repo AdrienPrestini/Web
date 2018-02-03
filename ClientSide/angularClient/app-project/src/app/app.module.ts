@@ -7,14 +7,13 @@ import { CollapseModule } from 'ngx-bootstrap';
 import { AgmCoreModule } from '@agm/core';
 import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
-
-
+import { AgmDirectionModule } from 'agm-direction';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,6 +23,7 @@ import { FooterComponent } from './footer/footer.component';
       apiKey: 'AIzaSyC4X1tSatj9uOJbHGmbpB0Q916JMuTFV1I',
       libraries: ['places']
     }),
+    AgmDirectionModule,
     CollapseModule
   ],
   providers: [],
