@@ -21,14 +21,32 @@ MongoClient.connect(url, function(err, client) {
     console.log("Connexion à la collection ", collectionName);
 });
 
+var service = {};
 
-exports.getAllAccidents = function() {
+service.getAllAccidents = getAllAccidents;
+service.getAccidentById = getAccidentById;
+
+module.exports = service;
+
+
+
+
+function getAllAccidents() {
     return new Promise((resolve, reject) => {
         accidents.find({
             geometry:
                 { $geoWithin:
                    { $centerSphere: [ [ 7.261953, 43.710173 ], 5 / 3963.2 ] } } 
         }).toArray(function(err, docs) {
+            if(err) reject(err);
+            resolve(docs);
+        });
+    });
+}
+
+function getAccidentById(id){
+    return new Promise((resolve, reject) => {
+        accidents.findOne({'_id': new ObjectId(id)}, (err, docs) => {
             if(err) reject(err);
             resolve(docs);
         });
