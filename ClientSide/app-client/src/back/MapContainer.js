@@ -1,4 +1,4 @@
-﻿import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
+﻿
 import React, { Component } from 'react';
 import { geolocated } from 'react-geolocated';
 
@@ -6,7 +6,7 @@ export class MapContainer extends Component {
     render() {
         console.log(this.props);
 
-        return !this.props.isGeolocationAvailable
+        return( !this.props.isGeolocationAvailable
             ? <div>Your browser does not support Geolocation</div>
             : !this.props.isGeolocationEnabled
                 ? <div>Geolocation is not enabled</div>
@@ -18,12 +18,18 @@ export class MapContainer extends Component {
                             <tr><td>altitude</td><td>{this.props.coords.altitude}</td></tr>
                             <tr><td>heading</td><td>{this.props.coords.heading}</td></tr>
                             <tr><td>speed</td><td>{this.props.coords.speed}</td></tr>
+                            
                         </tbody>
                     </table>
-                    : <div>Getting the location data&hellip; </div>;
+        : <div>Getting the location data&hellip; </div>
+    );
     }
 }
 
-export default GoogleApiWrapper({
-    apiKey: ('AIzaSyCsnPcpVyrzm72BVotliaZx3QHlQuu6T2A')
-})(MapContainer)
+
+export default geolocated({
+    positionOptions: {
+      enableHighAccuracy: false,
+    },
+    userDecisionTimeout: 5000,
+})(MapContainer);
