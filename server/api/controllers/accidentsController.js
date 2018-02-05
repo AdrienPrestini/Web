@@ -11,9 +11,9 @@ module.exports = router;
 
 function list_all_accidents(req, res) {
     accidentService.getAllAccidents().then((result) => {
-        console.log("COUCOU");
-        res.json(result);
+        res.send(result);
     }).catch((error) => {
         console.log(error);
+        res.status(400).send(error);
     });
 };

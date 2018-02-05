@@ -8,21 +8,28 @@ var Q = require('Q');
 
 // Connection URL
 const url = 'mongodb://localhost:27017';
-
 // Database Name
-const dbName = 'projetWeb';
+const dbName = 'accidents';
+// This file's collection
+const collectionName = 'Accidents';
+
+var db;
+var accidents;
+MongoClient.connect(url, function(err, client) {
+    if(err)
+        console.log("Connexion impossible à MongoDB. Collection : ", collectionName);
+
+    db = client.db(dbName);
+    accidents = db.collection(collectionName);
+    console.log("Connexion à la collection ", collectionName);
+});
+
 
 exports.getAllAccidents = function() {
     return new Promise((resolve, reject) => {
-        MongoClient.connect(url, function(err, client) {
-            if(err)
-                reject("Connexion impossible à MongoDB");
-
-            var db = client.db(dbName);
-            db.collection('Caracteristiques').find({}).toArray(function(err, docs) {
-                console.log("Found the following records");
-                resolve(docs);
-            });
+        accidents.find({}).toArray(function(err, docs) {
+            if(err) reject(err);
+            resolve(docs);
         });
     });
 }
