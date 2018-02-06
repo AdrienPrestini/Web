@@ -24,10 +24,16 @@
         "nodemon": "^1.14.11"
     },
     "dependencies": {
+        "@google/maps": "^0.4.5",
+        "@mapbox/polyline": "^0.2.0",
         "body-parser": "^1.18.2",
         "express": "^4.16.2",
+        "geolib": "^2.0.24",
+        "google-polyline": "^1.0.0",
         "mongodb": "^2.2.34",
         "mongoose": "^5.0.2",
+        "node-fetch": "^2.0.0",
+        "polyline": "^0.2.0",
         "q": "^1.5.1"
     }
 }
