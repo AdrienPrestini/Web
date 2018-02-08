@@ -1,9 +1,10 @@
-import {Component, ElementRef, ViewChild, NgZone, Input, Inject} from '@angular/core';
+import { Component, ElementRef, ViewChild, NgZone, Input, Inject} from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { FormControl } from '@angular/forms';
 import { MapsAPILoader} from '@agm/core';
 import {} from '@types/googlemaps';
-
+import { MouseEvent } from '@agm/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -13,25 +14,26 @@ import {} from '@types/googlemaps';
 })
 
 export class AppComponent implements OnInit{
-
-  titreProjet: string = 'Client Side Project';
+ 
+  titreProjet: string = 'Project Side Client';
   lat: number = 51.678418;
   lng: number = 7.809007;
   isCollapsed: boolean;
-
-
   dir = undefined;
 
+  isClicked = false;
   markers: marker[] = []
   @ViewChild('searchStart') public searchElementStart: ElementRef;
   @ViewChild('searchEnd') public searchElementEnd: ElementRef;
   @Input() inputStart: string;
   @Input() inputEnd: string;
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone){
+  @Input() typeAccident: string;
+
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService : NgbModal){
     this.isCollapsed = true;
   }
   ngOnInit(){
-
+      // on récupère la localisation du client
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.lat = position.coords.latitude;
@@ -41,15 +43,17 @@ export class AppComponent implements OnInit{
           lng: this.lng,
           etat:"Vous êtes ici !",
           label:'ici',
-          draggable: true
+          draggable: false
         });
       });
     }
+
     //load Places Autocomplete for start
     this.mapsAPILoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementStart.nativeElement, {
         types: ["address"]
       });
+      console.log("Salut les copains");
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
           //get the place result
@@ -71,7 +75,7 @@ export class AppComponent implements OnInit{
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
             etat:"Debut de la course",
-            draggable: true,
+            draggable: false,
             label : 'A'
           })
           this.inputStart = place.formatted_address;
@@ -95,6 +99,7 @@ export class AppComponent implements OnInit{
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
+            
           }
           for(var i = 0; i < this.markers.length; i++){
             if(this.markers[i].label =="B"){
@@ -107,7 +112,7 @@ export class AppComponent implements OnInit{
             lng: place.geometry.location.lng(),
             etat:"Fin de la course",
             label : 'B',
-            draggable: true
+            draggable: false
           });
           this.inputEnd = place.formatted_address;
           this.lat = place.geometry.location.lat();
@@ -117,6 +122,32 @@ export class AppComponent implements OnInit{
       });
     });
   }
+
+  open(content) {
+
+    console.log('this.isClicked = ' + this.isClicked);
+    this.modalService.open(content).result.then((result) => {
+      //alert(`Closed with: ${result}`);
+      if(!this.isClicked){
+        this.isClicked = !this.isClicked;
+      }
+      console.log(this.typeAccident);
+    }, (reason) => {
+      //alert(`Dismissed ${this.getDismissReason(reason)}`);
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
+ 
   computePath(){
     if(this.inputStart != "" && this.inputEnd !="" && 
     this.inputStart != undefined && this.inputEnd != undefined){
@@ -155,7 +186,24 @@ export class AppComponent implements OnInit{
   openDialog() {
     alert("Il manque un point (de départ ou d'arrivée) à votre trajet.");
   }
-
+  
+  clickedMarker(lat: number, lng: number) {
+    console.log(this.markers)
+    alert(`clicked the marker: et ${lat} et ${lng}`);
+   }
+   mapClicked($event: MouseEvent) {
+    if(this.isClicked){
+      this.isClicked = !this.isClicked;
+      this.markers.push({
+        lat: $event.coords.lat,
+        lng: $event.coords.lng,
+        label:"accident",
+        etat : this.typeAccident,
+        draggable: false
+      });
+      this.typeAccident = "";
+    }   
+  }
 }
 // just an interface for type safety.
 interface marker {
@@ -164,4 +212,8 @@ interface marker {
   label?: string;
   etat: string
   draggable: boolean;
+}
+enum ModalDismissReasons {
+  BACKDROP_CLICK,
+  ESC
 }

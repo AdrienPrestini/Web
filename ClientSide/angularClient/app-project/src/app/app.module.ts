@@ -8,6 +8,7 @@ import { AgmCoreModule } from '@agm/core';
 import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { AgmDirectionModule } from 'agm-direction';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -21,10 +22,12 @@ import { AgmDirectionModule } from 'agm-direction';
     FormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyC4X1tSatj9uOJbHGmbpB0Q916JMuTFV1I',
-      libraries: ['places']
+      libraries: ['places', 'geometry'],
+    
     }),
     AgmDirectionModule,
-    CollapseModule
+    CollapseModule,
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
