@@ -7,7 +7,7 @@ var fetch = require('node-fetch');
 
 var polygonTools = require('../../tools/polygon');
 
-var API_KEY = 'AIzaSyCc1nFIcd0mm88LpTCiHxgrCImzOs7JxN4';
+var GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || '';
 
 const url = 'mongodb://localhost:27017';
 // Database Name
@@ -87,6 +87,6 @@ function getAccidentById(id){
 
 
 function getDirections(start, end) {
-    return fetch('https://maps.googleapis.com/maps/api/directions/json?origin='+start.latitude+','+start.longitude+'&destination='+end.latitude+','+end.longitude+'&key='+API_KEY);
+    return fetch('https://maps.googleapis.com/maps/api/directions/json?origin='+start.latitude+','+start.longitude+'&destination='+end.latitude+','+end.longitude+'&key='+GOOGLE_API_KEY);
 }
 
