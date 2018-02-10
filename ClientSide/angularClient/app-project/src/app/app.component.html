@@ -37,7 +37,22 @@
     [latitude]="m.lat"
     [longitude]="m.lng"
     [markerDraggable]="m.draggable"
-    (markerClick)="clickedMarker(m.lat,m.lng)">
+    (markerClick)="clickedMarker(m.lat,m.lng)"
+    [label]="m.label">
+    <agm-info-window>
+      <strong><b>{{m.etat}}</b></strong>
+    </agm-info-window>
+
+  </agm-marker>
+
+
+  <agm-marker
+    *ngFor="let m of markersAccidents;"
+    [latitude]="m.lat"
+    [longitude]="m.lng"
+    [markerDraggable]="m.draggable"
+    (markerClick)="clickedMarker(m.lat,m.lng)"
+    [label]="m.label">
 
     <agm-info-window>
       <strong><b>{{m.etat}}</b></strong>

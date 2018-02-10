@@ -14,7 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class AppComponent implements OnInit{
- 
+
   titreProjet: string = 'Project Side Client';
   lat: number = 51.678418;
   lng: number = 7.809007;
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit{
 
   isClicked = false;
   markers: marker[] = []
+  markersAccidents: marker[] = []
   @ViewChild('searchStart') public searchElementStart: ElementRef;
   @ViewChild('searchEnd') public searchElementEnd: ElementRef;
   @Input() inputStart: string;
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit{
           lng: this.lng,
           etat:"Vous êtes ici !",
           label:'ici',
-          draggable: false
+          draggable: false,
         });
       });
     }
@@ -53,7 +54,6 @@ export class AppComponent implements OnInit{
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementStart.nativeElement, {
         types: ["address"]
       });
-      console.log("Salut les copains");
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
           //get the place result
@@ -65,9 +65,7 @@ export class AppComponent implements OnInit{
           }
           for(var i = 0; i < this.markers.length; i++){
             if(this.markers[i].label =="A"){
-              console.log("on enlève me point A");
               this.markers.splice(i,1);
-              console.log(this.markers);
             }
           }
 
@@ -75,9 +73,9 @@ export class AppComponent implements OnInit{
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
             etat:"Debut de la course",
+            label : 'A',
             draggable: false,
-            label : 'A'
-          })
+          });
           this.inputStart = place.formatted_address;
           //set latitude, longitude and zoom
           this.lat = place.geometry.location.lat();
@@ -124,8 +122,6 @@ export class AppComponent implements OnInit{
   }
 
   open(content) {
-
-    console.log('this.isClicked = ' + this.isClicked);
     this.modalService.open(content).result.then((result) => {
       //alert(`Closed with: ${result}`);
       if(!this.isClicked){
@@ -172,15 +168,17 @@ export class AppComponent implements OnInit{
           };
         }
       });
-      alert("Vous allez de " + markerStart.name + " à "+markerEnd.name);
+      
       this.dir = {
         origin: { lat: markerStart.lat, lng: markerStart.lng },
         destination: { lat: markerEnd.lat, lng: markerEnd.lng }
       }
-    //envoyer au serveur les deux points de début et fin
+    //envoyer au serveur les deux points de début et fin pour avoir les instructions et les accidents
+    this.sendPointsToGetInstructionsAndAccidents();
     }else {
       this.openDialog();
     }
+    this.deleteMarkers();
   }
   
   openDialog() {
@@ -188,22 +186,33 @@ export class AppComponent implements OnInit{
   }
   
   clickedMarker(lat: number, lng: number) {
-    console.log(this.markers)
-    alert(`clicked the marker: et ${lat} et ${lng}`);
+    console.log(this.markersAccidents)
    }
    mapClicked($event: MouseEvent) {
     if(this.isClicked){
       this.isClicked = !this.isClicked;
-      this.markers.push({
+      this.markersAccidents.push({
         lat: $event.coords.lat,
         lng: $event.coords.lng,
-        label:"accident",
+        label:"!",
         etat : this.typeAccident,
-        draggable: false
+        draggable: false,
+        
       });
       this.typeAccident = "";
     }   
   }
+
+  deleteMarkers(){
+    console.log("Suppression des items inutiles");
+    this.markers.forEach(item =>{
+      if(item.label == 'A' || item.label == 'B'){
+        this.markers.splice(this.markers.indexOf(item));
+      }
+    });
+    console.log(this.markers);
+  }
+  sendPointsToGetInstructionsAndAccidents() {}
 }
 // just an interface for type safety.
 interface marker {
@@ -211,7 +220,7 @@ interface marker {
   lng: number;
   label?: string;
   etat: string
-  draggable: boolean;
+  draggable: boolean
 }
 enum ModalDismissReasons {
   BACKDROP_CLICK,

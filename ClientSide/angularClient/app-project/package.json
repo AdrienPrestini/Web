@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "code": "ng serve --aot --host 10.212.97.200 --ssl 1 -ssl key \".\\node_modules\\browser-sync\\certs\\server.key\" --ssl-cert \"node_modules\\browser-sync\\certs\\server.crt\"",
+    "code": "ng serve --aot --host 192.168.43.142 --ssl 1 -ssl key \".\\node_modules\\browser-sync\\certs\\server.key\" --ssl-cert \"node_modules\\browser-sync\\certs\\server.crt\"",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
