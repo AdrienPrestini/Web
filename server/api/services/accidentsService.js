@@ -7,8 +7,9 @@ var fetch = require('node-fetch');
 
 var polygonTools = require('../../tools/polygon');
 
-    boxer = new RouteBoxer(),
+    
 var RouteBoxer = require('geojson.lib.routeboxer'),
+    boxer = new RouteBoxer(),
     boxes;
 var GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || '';
 
@@ -43,7 +44,6 @@ function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
         getDirections({latitude: lat_start, longitude: lng_start}, {latitude: lat_end, longitude: lng_end})
             .then(res => res.json())
             .then(json => { 
-                resolve(json);
                 var steps = json.routes[0].legs[0].steps;
                 result.steps = [];
                 for(var i = 0 ; i < steps.length; ++i) {
