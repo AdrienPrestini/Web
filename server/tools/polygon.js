@@ -96,3 +96,12 @@ exports.transformItinerayToLineString = function(itinerary) {
     };
     return path;
 }
+
+exports.transformPolygonArrayToMultiPolygon = function(polygonArray) {
+    var result = [];
+    for(var i = 0; i < polygonArray.length; ++i) {
+        polygonArray[i].coordinates[0].push(polygonArray[i].coordinates[0][0]);
+        result.push(polygonArray[i].coordinates);
+    }
+    return result;
+}

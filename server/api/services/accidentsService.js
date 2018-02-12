@@ -35,6 +35,7 @@ var service = {};
 service.getAccidentsOnItinerary = getAccidentsOnItinerary;
 service.getAccidentById = getAccidentById;
 service.newAccident = newAccident;
+service.getAccidentInRadius = getAccidentInRadius;
 
 module.exports = service;
 
@@ -54,18 +55,14 @@ function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
                         instruction :steps[i].html_instructions
                     });
                 }
-                boxes = boxer.box(polygonTools.transformItinerayToLineString(json.routes[0].overview_polyline.points), 50);
-                resolve(boxes);
-                //console.log(boxes)
-                /*var polygonItinerary = polygonTools.getPolygonByPolyline(json.routes[0].overview_polyline.points);
+                boxes = boxer.box(polygonTools.transformItinerayToLineString(json.routes[0].overview_polyline.points), 0.1);
+                var multiPolygon = polygonTools.transformPolygonArrayToMultiPolygon(boxes);
                 accidents.find({
                     geometry: { 
                         $geoIntersects: {
                             $geometry: {
-                                "type": "Polygon",
-                                "coordinates": [
-                                    polygonItinerary
-                                ]
+                                "type": "MultiPolygon",
+                                "coordinates": multiPolygon
                             }
                         }
                     }
@@ -101,10 +98,11 @@ function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
                             resolve(result);
                         });
                     } else {
+                        console.log("No Intersect !!");
                         result.dangerPoint = docs;
                         resolve(result);
                     }
-                });*/
+                });
             });
     });
 }
@@ -116,6 +114,15 @@ function getAccidentById(id){
             resolve(docs);
         });
     });
+}
+
+function getAccidentInRadius(lat_center, lng_center, radius) {
+    var radiusKM = radius/1000;
+    return new Promise((resolve, reject) => {
+        accidents.find( {
+            geometry: { $geoWithin: { $centerSphere: [ [ lng_center, lat_center ], radiusKM/6,378.1 ] } }
+        })
+    }) 
 }
 
 

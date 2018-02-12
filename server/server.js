@@ -1,8 +1,10 @@
 delete process.env.GOOGLE_API_KEY;
 require('dotenv').config();
+var cors = require('cors')
 
 var express = require('express');
 var app = express();
+app.use(cors())
 var bodyParser = require('body-parser');
 
 port = process.env.PORT || 3000;
