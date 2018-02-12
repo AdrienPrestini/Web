@@ -7,6 +7,9 @@ var fetch = require('node-fetch');
 
 var polygonTools = require('../../tools/polygon');
 
+    boxer = new RouteBoxer(),
+var RouteBoxer = require('geojson.lib.routeboxer'),
+    boxes;
 var GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || '';
 
 const url = 'mongodb://localhost:27017';
@@ -28,20 +31,19 @@ MongoClient.connect(url, function(err, client) {
 
 var service = {};
 
-service.getAllAccidents = getAllAccidents;
+service.getAccidentsOnItinerary = getAccidentsOnItinerary;
 service.getAccidentById = getAccidentById;
 
 module.exports = service;
 
 
-
-
-function getAllAccidents() {
+function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
     return new Promise((resolve, reject) => {
         var result = {};
-        getDirections({latitude: '43.686277', longitude: '7.236539'}, {latitude: '43.691242', longitude: '7.244883'})
+        getDirections({latitude: lat_start, longitude: lng_start}, {latitude: lat_end, longitude: lng_end})
             .then(res => res.json())
             .then(json => { 
+                resolve(json);
                 var steps = json.routes[0].legs[0].steps;
                 result.steps = [];
                 for(var i = 0 ; i < steps.length; ++i) {
@@ -51,8 +53,10 @@ function getAllAccidents() {
                         instruction :steps[i].html_instructions
                     });
                 }
-                var polygonItinerary = polygonTools.getPolygonByPolyline(json.routes[0].overview_polyline.points);
-                console.log(polygonItinerary);
+                boxes = boxer.box(polygonTools.transformItinerayToLineString(json.routes[0].overview_polyline.points), 50);
+                resolve(boxes);
+                //console.log(boxes)
+                /*var polygonItinerary = polygonTools.getPolygonByPolyline(json.routes[0].overview_polyline.points);
                 accidents.find({
                     geometry: { 
                         $geoIntersects: {
@@ -63,15 +67,43 @@ function getAllAccidents() {
                                 ]
                             }
                         }
-                    }    
-                    //_id: new ObjectId('5a78635aa4f6552feb9084c3')
+                    }
                 }).toArray(function(err, docs) {
-                    if(err) 
-                        reject(err);
-                    console.log(docs);
-                    result.dangerPoint = docs;
-                    resolve(result);
-                });
+                    if(err) {
+                        console.log("Intersect Polygon -> Take the itinerary Bounds");
+                        var NEBounds = json.routes[0].bounds.northeast;
+                        var SWBounds = json.routes[0].bounds.southwest;
+                        console.log(NEBounds);
+                        console.log(SWBounds);
+                        accidents.find({
+                            geometry: { 
+                                $geoIntersects: {
+                                    $geometry: {
+                                        "type": "Polygon",
+                                        "coordinates": [
+                                            [
+                                                [NEBounds.lng, NEBounds.lat],
+                                                [NEBounds.lng, SWBounds.lat],
+                                                [SWBounds.lng, SWBounds.lat],
+                                                [SWBounds.lng, NEBounds.lat],
+                                                [NEBounds.lng, NEBounds.lat]
+                                            ]
+                                        ]
+                                    }
+                                }
+                            }
+                        }).toArray(function(err, docs) {
+                            if(err) {
+                                reject(err);
+                            }
+                            result.dangerPoint = docs;
+                            resolve(result);
+                        });
+                    } else {
+                        result.dangerPoint = docs;
+                        resolve(result);
+                    }
+                });*/
             });
     });
 }

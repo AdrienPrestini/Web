@@ -83,3 +83,16 @@ exports.getPolygonByPolyline = function(_polyline) {
     result.push(result[0]);
     return result;
 }
+
+exports.transformItinerayToLineString = function(itinerary) {
+    var polyline_decoded = polyline.decode(itinerary);
+    var pointsArray = [];
+    for(var i = 0; i < polyline_decoded.length; ++i) {
+        pointsArray.push([polyline_decoded[i][1], polyline_decoded[i][0]]);
+    }
+    var path = {
+        "type": "LineString",
+        "coordinates": pointsArray
+    };
+    return path;
+}
