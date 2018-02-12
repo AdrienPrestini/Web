@@ -44,64 +44,68 @@ function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
         var result = {};
         getDirections({latitude: lat_start, longitude: lng_start}, {latitude: lat_end, longitude: lng_end})
             .then(res => res.json())
-            .then(json => { 
-                var steps = json.routes[0].legs[0].steps;
-                result.steps = [];
-                for(var i = 0 ; i < steps.length; ++i) {
-                    result.steps.push({
-                        distance : steps[i].distance,
-                        duration : steps[i].duration,
-                        instruction :steps[i].html_instructions
-                    });
-                }
-                boxes = boxer.box(polygonTools.transformItinerayToLineString(json.routes[0].overview_polyline.points), 0.1);
-                var multiPolygon = polygonTools.transformPolygonArrayToMultiPolygon(boxes);
-                accidents.find({
-                    geometry: { 
-                        $geoIntersects: {
-                            $geometry: {
-                                "type": "MultiPolygon",
-                                "coordinates": multiPolygon
-                            }
-                        }
+            .then(json => {
+                if(json.routes[0].legs == 'undefined'){
+                    console.log("OKOK");
+                    resolve('{}');
+                } 
+                else {
+                    var steps = json.routes[0].legs[0].steps;
+                    result.steps = [];
+                    for(var i = 0 ; i < steps.length; ++i) {
+                        result.steps.push({
+                            distance : steps[i].distance,
+                            duration : steps[i].duration,
+                            instruction :steps[i].html_instructions
+                        });
                     }
-                }).toArray(function(err, docs) {
-                    if(err) {
-                        console.log("Intersect Polygon -> Take the itinerary Bounds");
-                        var NEBounds = json.routes[0].bounds.northeast;
-                        var SWBounds = json.routes[0].bounds.southwest;
-                        console.log(NEBounds);
-                        console.log(SWBounds);
-                        accidents.find({
-                            geometry: { 
-                                $geoIntersects: {
-                                    $geometry: {
-                                        "type": "Polygon",
-                                        "coordinates": [
-                                            [
-                                                [NEBounds.lng, NEBounds.lat],
-                                                [NEBounds.lng, SWBounds.lat],
-                                                [SWBounds.lng, SWBounds.lat],
-                                                [SWBounds.lng, NEBounds.lat],
-                                                [NEBounds.lng, NEBounds.lat]
-                                            ]
-                                        ]
-                                    }
+                    boxes = boxer.box(polygonTools.transformItinerayToLineString(json.routes[0].overview_polyline.points), 0.1);
+                    var multiPolygon = polygonTools.transformPolygonArrayToMultiPolygon(boxes);
+                    accidents.find({
+                        geometry: { 
+                            $geoIntersects: {
+                                $geometry: {
+                                    "type": "MultiPolygon",
+                                    "coordinates": multiPolygon
                                 }
                             }
-                        }).toArray(function(err, docs) {
-                            if(err) {
-                                reject(err);
-                            }
+                        }
+                    }).toArray(function(err, docs) {
+                        if(err) {
+                            var NEBounds = json.routes[0].bounds.northeast;
+                            var SWBounds = json.routes[0].bounds.southwest;
+                            console.log(NEBounds);
+                            console.log(SWBounds);
+                            accidents.find({
+                                geometry: { 
+                                    $geoIntersects: {
+                                        $geometry: {
+                                            "type": "Polygon",
+                                            "coordinates": [
+                                                [
+                                                    [NEBounds.lng, NEBounds.lat],
+                                                    [NEBounds.lng, SWBounds.lat],
+                                                    [SWBounds.lng, SWBounds.lat],
+                                                    [SWBounds.lng, NEBounds.lat],
+                                                    [NEBounds.lng, NEBounds.lat]
+                                                ]
+                                            ]
+                                        }
+                                    }
+                                }
+                            }).toArray(function(err, docs) {
+                                if(err) {
+                                    reject(err);
+                                }
+                                result.dangerPoint = docs;
+                                resolve(result);
+                            });
+                        } else {
                             result.dangerPoint = docs;
                             resolve(result);
-                        });
-                    } else {
-                        console.log("No Intersect !!");
-                        result.dangerPoint = docs;
-                        resolve(result);
-                    }
-                });
+                        }
+                    });
+                }
             });
     });
 }
@@ -126,6 +130,6 @@ function getAccidentInRadius(lat_center, lng_center, radius) {
 
 
 function getDirections(start, end) {
-    return fetch('https://maps.googleapis.com/maps/api/directions/json?origin='+start.latitude+','+start.longitude+'&destination='+end.latitude+','+end.longitude+'&key='+GOOGLE_API_KEY);
+    return fetch('https://maps.googleapis.com/maps/api/directions/json?language=fr&origin='+start.latitude+','+start.longitude+'&destination='+end.latitude+','+end.longitude+'&key='+GOOGLE_API_KEY);
 }
 
