@@ -12,6 +12,7 @@ var RouteBoxer = require('geojson.lib.routeboxer'),
     boxer = new RouteBoxer(),
     boxes;
 var GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || '';
+const uuidv4 = require('uuid/v4');
 
 const url = 'mongodb://localhost:27017';
 // Database Name
@@ -37,8 +38,10 @@ service.getAccidentById = getAccidentById;
 service.newAccident = newAccident;
 service.getAccidentInRadius = getAccidentInRadius;
 
-module.exports = service;
+service.addComment = addComment;
+service.deleteComment = deleteComment;
 
+module.exports = service;
 
 function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
     return new Promise((resolve, reject) => {
@@ -132,6 +135,48 @@ function getAccidentInRadius(lat_center, lng_center, radius) {
 
 function getDirections(start, end) {
     return fetch('https://maps.googleapis.com/maps/api/directions/json?language=fr&origin='+start.latitude+','+start.longitude+'&destination='+end.latitude+','+end.longitude+'&key='+GOOGLE_API_KEY);
+}
+
+function addComment(infos) {
+    return new Promise((resolve, reject) => {
+        accidents.update({
+            "_id" : new ObjectId(infos._idaccident) 
+        },
+        {
+            $push : {
+                "comments" : {
+                    'id': uuidv4(),
+                    'text' : infos.text,
+                    'rate': infos.rate
+                }
+            }
+        },
+        { 
+            upsert : true 
+        }).then((r) => {
+            resolve(r);
+        });
+    });
+}
+
+function deleteComment(idaccident, idcomment) {
+    return new Promise((resolve, reject) => {
+        accidents.update({
+            "_id": new ObjectId(idaccident) 
+        },
+        { 
+            $pull: { 
+                "comments" : { 
+                    id: idcomment 
+                } 
+            } 
+        },
+        false,
+        true)
+        .then((r) => {
+            resolve(r);
+        });
+    });
 }
 
 function newAccident(infos){
