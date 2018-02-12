@@ -7,6 +7,7 @@ var accidentService = require('../services/accidentsService');
 //router.get('/', list_all_accidents);
 router.get('/:_id', accidentById);
 router.get('/:lat_start/:lng_start/:lat_end/:lng_end', accidentsOnItinerary);
+router.get('/circle/:lat_center/:lng_center/:radius', accidentsInRadius);
 
 //ADD ACCIDENT
 //MODIFY ACCIDENT
@@ -28,6 +29,10 @@ function list_all_accidents(req, res) {
         res.status(400).send(error);
     });*/
     res.send('{}');
+}
+
+function accidentsInRadius(req, res) {
+
 }
 
 function accidentsOnItinerary(req, res) {

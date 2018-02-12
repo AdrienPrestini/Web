@@ -34,6 +34,7 @@ var service = {};
 
 service.getAccidentsOnItinerary = getAccidentsOnItinerary;
 service.getAccidentById = getAccidentById;
+service.getAccidentInRadius = getAccidentInRadius;
 
 module.exports = service;
 
@@ -112,6 +113,15 @@ function getAccidentById(id){
             resolve(docs);
         });
     });
+}
+
+function getAccidentInRadius(lat_center, lng_center, radius) {
+    var radiusKM = radius/1000;
+    return new Promise((resolve, reject) => {
+        accidents.find( {
+            geometry: { $geoWithin: { $centerSphere: [ [ lng_center, lat_center ], radiusKM/6,378.1 ] } }
+        })
+    }) 
 }
 
 
