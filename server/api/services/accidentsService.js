@@ -36,6 +36,7 @@ service.getAccidentsOnItinerary = getAccidentsOnItinerary;
 service.getAccidentById = getAccidentById;
 service.newAccident = newAccident;
 service.getAccidentInRadius = getAccidentInRadius;
+service.updateAccident = updateAccident;
 
 module.exports = service;
 
@@ -130,16 +131,36 @@ function getDirections(start, end) {
     return fetch('https://maps.googleapis.com/maps/api/directions/json?origin='+start.latitude+','+start.longitude+'&destination='+end.latitude+','+end.longitude+'&key='+GOOGLE_API_KEY);
 }
 
-function newAccident(infos){
+function formatAccidentModel(infos){
     var accident = {geometry:{}, properties:{}};
     accident.geometry.coordinates = [infos.long, infos.lat];
     accident.properties.coord = [infos.lat, infos.long];
     accident.properties.libellevoie = infos.libelle;
+    return accident;
+}
+
+function newAccident(infos){
+    var accident = formatAccidentModel(infos);
 
     return new Promise((resolve, reject) => {
         accidents.insertOne(accident)
         .then((r) => {
             resolve(r.insertedId);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
+
+function updateAccident(id, infos){
+    var accident = formatAccidentModel(infos);
+
+    return new Promise((resolve, reject) => {
+        accidents.updateOne({ _id: new ObjectId(id) }, { $set: accident })
+        .then((r) => {
+            resolve(r.insertedId);
+        }).catch((error) => {
+            reject(error);
         });
     });
 }
