@@ -9,6 +9,8 @@ router.get('/:_id', accidentById);
 router.get('/:lat_start/:lng_start/:lat_end/:lng_end', accidentsOnItinerary);
 router.get('/circle/:lat_center/:lng_center/:radius', accidentsInRadius);
 
+//router.post('/addCommentary/:_id')
+
 //ADD ACCIDENT
 router.post('/', newAccident);
 //MODIFY ACCIDENT
@@ -21,20 +23,14 @@ router.put('/:_id', updateAccident);
 
 module.exports = router;
 
-
-function list_all_accidents(req, res) {
-    /*accidentService.getAllAccidents()
+function accidentsInRadius(req, res) {
+    accidentService.getAccidentInRadius(req.params.lat_center, req.params.lng_center, req.params.radius)
     .then((result) => {
         res.send(result);
     }).catch((error) => {
         console.log(error);
         res.status(400).send(error);
-    });*/
-    res.send('{}');
-}
-
-function accidentsInRadius(req, res) {
-
+    });
 }
 
 function accidentsOnItinerary(req, res) {
