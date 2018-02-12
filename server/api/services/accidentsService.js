@@ -37,6 +37,7 @@ service.getAccidentsOnItinerary = getAccidentsOnItinerary;
 service.getAccidentById = getAccidentById;
 service.newAccident = newAccident;
 service.getAccidentInRadius = getAccidentInRadius;
+service.updateAccident = updateAccident;
 
 service.addComment = addComment;
 service.deleteComment = deleteComment;
@@ -179,16 +180,36 @@ function deleteComment(idaccident, idcomment) {
     });
 }
 
-function newAccident(infos){
+function formatAccidentModel(infos){
     var accident = {geometry:{}, properties:{}};
     accident.geometry.coordinates = [infos.long, infos.lat];
     accident.properties.coord = [infos.lat, infos.long];
     accident.properties.libellevoie = infos.libelle;
+    return accident;
+}
+
+function newAccident(infos){
+    var accident = formatAccidentModel(infos);
 
     return new Promise((resolve, reject) => {
         accidents.insertOne(accident)
         .then((r) => {
             resolve(r.insertedId);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
+
+function updateAccident(id, infos){
+    var accident = formatAccidentModel(infos);
+
+    return new Promise((resolve, reject) => {
+        accidents.updateOne({ _id: new ObjectId(id) }, { $set: accident })
+        .then((r) => {
+            resolve(r.insertedId);
+        }).catch((error) => {
+            reject(error);
         });
     });
 }

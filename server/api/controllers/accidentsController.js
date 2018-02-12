@@ -12,6 +12,7 @@ router.get('/circle/:lat_center/:lng_center/:radius', accidentsInRadius);
 //ADD ACCIDENT
 router.post('/', newAccident);
 //MODIFY ACCIDENT
+router.put('/:_id', updateAccident);
 //DELETE ACCIDENT
 
 //ADD COMMENT ACCIDENT
@@ -89,11 +90,29 @@ Le body de la requête doit avoir les informations suivantes :
  */
 function newAccident(req, res){
     accidentService.newAccident(req.body).then((result) => {
-        console.log("Correctly added");
         res.send(result);
     })
     .catch((error) => {
         console.log("Error while adding accident");
+        res.status(400).send(error);
+    });
+}
+
+/*
+Fonction updateAccident
+Le body de la requête doit avoir les informations suivantes :
+{
+    libelle: "nom ou rue de l'accident",
+    lat : 1.0
+    long : 2.0
+}
+ */
+function updateAccident(req, res){
+    accidentService.updateAccident(req.params._id, req.body).then((result) => {
+        res.send(result);
+    })
+    .catch((error) => {
+        console.log("Error while updating accident");
         res.status(400).send(error);
     });
 }
