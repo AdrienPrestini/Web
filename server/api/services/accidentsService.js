@@ -34,6 +34,7 @@ var service = {};
 
 service.getAccidentsOnItinerary = getAccidentsOnItinerary;
 service.getAccidentById = getAccidentById;
+service.newAccident = newAccident;
 service.getAccidentInRadius = getAccidentInRadius;
 
 module.exports = service;
@@ -133,3 +134,16 @@ function getDirections(start, end) {
     return fetch('https://maps.googleapis.com/maps/api/directions/json?language=fr&origin='+start.latitude+','+start.longitude+'&destination='+end.latitude+','+end.longitude+'&key='+GOOGLE_API_KEY);
 }
 
+function newAccident(infos){
+    var accident = {geometry:{}, properties:{}};
+    accident.geometry.coordinates = [infos.long, infos.lat];
+    accident.properties.coord = [infos.lat, infos.long];
+    accident.properties.libellevoie = infos.libelle;
+
+    return new Promise((resolve, reject) => {
+        accidents.insertOne(accident)
+        .then((r) => {
+            resolve(r.insertedId);
+        });
+    });
+}
