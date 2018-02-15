@@ -5,6 +5,7 @@ import { MapsAPILoader} from '@agm/core';
 import {} from '@types/googlemaps';
 import { MouseEvent } from '@agm/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoaderService } from './loader.service';
 
 
 @Component({
@@ -15,31 +16,49 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class AppComponent implements OnInit{
 
-  titreProjet: string = 'Project Side Client';
+  titreProjet: string = 'Client Side';
   lat: number = 51.678418;
   lng: number = 7.809007;
   isCollapsed: boolean;
   dir = undefined;
 
-  isClicked = false;
   markers: marker[] = []
   markersAccidents: marker[] = []
   @ViewChild('searchStart') public searchElementStart: ElementRef;
   @ViewChild('searchEnd') public searchElementEnd: ElementRef;
   @Input() inputStart: string;
   @Input() inputEnd: string;
-  @Input() typeAccident: string;
+  isSearched = false;
+  isAccidents = false;
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService : NgbModal){
+  instructions;
+  accidents = [];
+  markerStart;
+  markerEnd;
+
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService : NgbModal, private loaderService : LoaderService){
     this.isCollapsed = true;
   }
-  ngOnInit(){
+  /*async getAccidents(){
+    this.instructions = await this.loaderService.getAccidents();
+    console.log(this.instructions.data);
+  }*/
+  async ngOnInit(){
+    //this.getAccidents();
       // on récupère la localisation du client
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
         this.markers.push({
+          lat: this.lat,
+          lng: this.lng,
+          etat:"Vous êtes ici !",
+          label:'ici',
+          draggable: false,
+        });
+        //examples TODO : Remove later. Is for testing event click marker
+        this.markersAccidents.push({
           lat: this.lat,
           lng: this.lng,
           etat:"Vous êtes ici !",
@@ -119,41 +138,16 @@ export class AppComponent implements OnInit{
         });
       });
     });
-  }
-
-  open(content) {
-    this.modalService.open(content).result.then((result) => {
-      //alert(`Closed with: ${result}`);
-      if(!this.isClicked){
-        this.isClicked = !this.isClicked;
-      }
-      console.log(this.typeAccident);
-    }, (reason) => {
-      //alert(`Dismissed ${this.getDismissReason(reason)}`);
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
- 
+  } 
   computePath(){
     if(this.inputStart != "" && this.inputEnd !="" && 
     this.inputStart != undefined && this.inputEnd != undefined){
       console.log(this.inputStart);
       console.log(this.inputEnd);
-      var markerStart, markerEnd;
       this.markers.forEach(item =>{
         if(item.label == "A"){
           console.log(item);
-          markerStart = {
+          this.markerStart = {
             lat : item.lat,
             lng : item.lng,
             name : this.inputStart
@@ -161,24 +155,24 @@ export class AppComponent implements OnInit{
         }
         if(item.label == "B"){
           console.log(item);
-          markerEnd = {
+          this.markerEnd = {
             lat : item.lat,
             lng : item.lng,
             name : this.inputEnd
           };
         }
       });
-      
+      this.deleteMarkers();
       this.dir = {
-        origin: { lat: markerStart.lat, lng: markerStart.lng },
-        destination: { lat: markerEnd.lat, lng: markerEnd.lng }
+        origin: { lat: this.markerStart.lat, lng: this.markerStart.lng },
+        destination: { lat: this.markerEnd.lat, lng: this.markerEnd.lng }
       }
     //envoyer au serveur les deux points de début et fin pour avoir les instructions et les accidents
     this.sendPointsToGetInstructionsAndAccidents();
     }else {
       this.openDialog();
     }
-    this.deleteMarkers();
+    
   }
   
   openDialog() {
@@ -186,29 +180,57 @@ export class AppComponent implements OnInit{
   }
   
   clickedMarker(id : string) {
-    //Demander au serveur des informations sur le marqueur @id
     console.log(id);
-    
   }
 
+
   deleteMarkers(){
-    console.log("Suppression des items inutiles");
-    this.markers.forEach(item =>{
-      if(item.label == 'A' || item.label == 'B'){
-        this.markers.splice(this.markers.indexOf(item));
-      }
-    });
-    console.log(this.markers);
+//  console.log("Suppression des items inutiles");
+    this.markers = [this.markers[0]];
   }
-  sendPointsToGetInstructionsAndAccidents() {}
+  sendPointsToGetInstructionsAndAccidents() {
+    this.instructions = this.loaderService.getItinary(this.markerStart, this.markerEnd).subscribe((res) => {
+      this.instructions = [];
+      console.log(res);
+      this.instructions = res.steps;
+      console.log(this.instructions);
+      this.isSearched = true;     
+      //on remplit les marqueurs 
+      res.dangerPoint.forEach(element => {
+        //ajouter l'accident dans la liste this.accidents
+        this.markersAccidents.push({
+          lat: element.properties.coordonnees[0],
+          lng: element.properties.coordonnees[1],
+          etat: element.properties.adr +", " + element.properties.agg,
+          label : '!',
+          draggable: false,
+          id : element.properties._id
+        });
+        this.accidents.push({
+          adr: element.properties.adr,
+          agg : element.properties.agg,
+          catr : element.properties.catr
+
+        });
+        
+      });
+
+    });
+  }
+
+  displayAccidents(){
+    console.log("ngrsogboi");
+    this.isAccidents = !this.isAccidents;
+  }
 }
 // just an interface for type safety.
 interface marker {
   lat: number;
   lng: number;
   label?: string;
-  etat: string
-  draggable: boolean
+  etat: string,
+  draggable: boolean,
+  id?:string
 }
 enum ModalDismissReasons {
   BACKDROP_CLICK,

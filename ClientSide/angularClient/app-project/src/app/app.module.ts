@@ -9,17 +9,22 @@ import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpModule } from '@angular/http';
+//import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+import { LoaderService } from './loader.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     FooterComponent,
+    
   ],
   imports: [
     BrowserModule,
     CommonModule,
     FormsModule,
+    HttpModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyC4X1tSatj9uOJbHGmbpB0Q916JMuTFV1I',
       libraries: ['places', 'geometry'],
@@ -27,9 +32,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     }),
     AgmDirectionModule,
     CollapseModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    //AgmJsMarkerClustererModule
   ],
-  providers: [],
+  providers: [LoaderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

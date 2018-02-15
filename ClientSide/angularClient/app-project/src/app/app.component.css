@@ -1,3 +1,30 @@
 agm-map {
-  height: 89vh;
+  height: 88vh;
+  width: 100%;
+}
+
+.instructionDiv{
+  position: absolute; 
+  z-index : 51; 
+  height: 88%; 
+  width: 30%; 
+  background-color:whitesmoke;
+  overflow-y: auto;
+
+}
+
+.custom{
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.AccidentDiv{
+  position: absolute; 
+  z-index : 51; 
+  height: 88%; 
+  width: 30%; 
+  background-color:whitesmoke;
+  overflow-y: auto;
+  margin-left: 70%;
+
 }
