@@ -14,8 +14,12 @@ import { ManagementComponent } from './management/management.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ClientComponent } from './client/client.component';
 
+import { HttpModule } from '@angular/http';
+//import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+import { LoaderService } from './loader.service';
+
 const appRoutes: Routes = [
-  { path: 'client', component: AppComponent },
+  { path: 'client', component: ClientComponent },
   { path: 'management', component: ManagementComponent },
   {
     path: '',
@@ -28,7 +32,6 @@ const appRoutes: Routes = [
     pathMatch: 'full'
   }
 ];
-
 
 @NgModule({
   declarations: [
@@ -46,6 +49,7 @@ const appRoutes: Routes = [
     BrowserModule,
     CommonModule,
     FormsModule,
+    HttpModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyC4X1tSatj9uOJbHGmbpB0Q916JMuTFV1I',
       libraries: ['places', 'geometry'],
@@ -53,9 +57,10 @@ const appRoutes: Routes = [
     }),
     AgmDirectionModule,
     CollapseModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    //AgmJsMarkerClustererModule
   ],
-  providers: [],
+  providers: [LoaderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

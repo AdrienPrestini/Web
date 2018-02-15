@@ -38,6 +38,7 @@ service.getAccidentById = getAccidentById;
 service.newAccident = newAccident;
 service.getAccidentInRadius = getAccidentInRadius;
 service.updateAccident = updateAccident;
+service.removeAccident = removeAccident;
 
 service.addComment = addComment;
 service.deleteComment = deleteComment;
@@ -271,7 +272,18 @@ function updateAccident(id, infos){
     return new Promise((resolve, reject) => {
         accidents.updateOne({ _id: new ObjectId(id) }, { $set: accident })
         .then((r) => {
-            resolve(r.insertedId);
+            resolve(r);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+}
+
+function removeAccident(id){
+    return new Promise((resolve, reject) => {
+        accidents.removeOne({ _id: new ObjectId(id) })
+        .then((r) => {
+            resolve(r);
         }).catch((error) => {
             reject(error);
         });

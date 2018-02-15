@@ -1,3 +1,64 @@
-<p>
-  client works!
-</p>
+<nav class="navbar navbar-light bg-faded" xmlns="http://www.w3.org/1999/html">
+  <div class="row">
+    <a href="/" class="navbar-brand"><img width="45" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">{{titreProjet}} </a>
+
+    <input autocorrect="off" #searchStart type="text" id="form1" class="form-control col-lg-3 " [(ngModel)]="inputStart" placeholder="Début du voyage">
+    <input autocorrect="off" #searchEnd type="text" id="form2" class="form-control col-lg-3" [(ngModel)]="inputEnd" placeholder="Fin du voyage">
+    <button class="btn-outline-success form-control col-lg-2" type="button" (click)="computePath()">Rechercher</button>
+    <a (click)="displayAccidents()" class="navbar-brand"><img width="45" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="></a>
+
+  </div>
+</nav>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Ajouter un marqueur</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Type d'accident : </p> <input [(ngModel)]="typeAccident" type="text" class="form-control" placeholder="Type">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Choisir la localisation</button>
+  </div>
+</ng-template>
+
+<div class="row custom">
+  <!--The content below is only a placeholder and can be replaced.-->
+  <agm-map style="z-index:4" [latitude]="lat" [longitude]="lng" [zoom]="15">
+    <agm-direction *ngIf="dir" [origin]="dir.origin" [destination]="dir.destination"></agm-direction>
+
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    <agm-marker *ngFor="let m of markersAccidents;"
+                [latitude]="m.lat"
+                [longitude]="m.lng"
+                [markerDraggable]="m.draggable"
+                (markerClick)="clickedMarker(m.lat,m.lng)"
+                (markerClick)="clickedMarker(m.lat, m.lng)"
+                [label]="m.label">
+    </agm-marker>
+  </agm-map>
+
+  <div class="instructionDiv navbar navbar-light bg-faded" *ngIf="isSearched">
+    <h4 style="text-align: center;"><strong>Instructions</strong> de votre trajet.</h4>
+    <ul>
+      <li *ngFor="let inst of instructions, let i = index">
+        <p [innerHTML]=inst.instruction></p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="AccidentDiv navbar navbar-light bg-faded" *ngIf="isAccidents">
+    <h4 style="text-align: center;"><strong>Incidents</strong></h4>
+
+    <ul>
+      <li *ngFor="let acc of accidents, let i = index">
+        <p [innerHTML]=acc.adr></p>
+        <p [innerHTML]=acc.agg></p>
+        <p [innerHTML]=acc.catr></p>
+      </li>
+    </ul>
+  </div>
+</div>

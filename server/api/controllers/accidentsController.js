@@ -21,6 +21,7 @@ router.get('/circle/:lat_center/:lng_center/:radius', accidentsInRadius); //GET 
 router.post('/', newAccident); //ADD ACCIDENT
 router.put('/:_id', updateAccident); //MODIFY ACCIDENT
 //DELETE ACCIDENT
+router.delete('/:_id', removeAccident);
 
 
 router.post('/comment', newComment); //ADD COMMENT ACCIDENT
@@ -143,6 +144,19 @@ function updateAccident(req, res){
     })
     .catch((error) => {
         console.log("Error while updating accident");
+        res.status(400).send(error);
+    });
+}
+
+/*
+Fonction removeAccident
+ */
+function removeAccident(req, res){
+    accidentService.removeAccident(req.params._id).then((result) => {
+        res.send(result);
+    })
+    .catch((error) => {
+        console.log("Error while removing accident");
         res.status(400).send(error);
     });
 }
