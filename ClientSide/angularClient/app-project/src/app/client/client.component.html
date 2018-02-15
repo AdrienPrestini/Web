@@ -10,21 +10,6 @@
   </div>
 </nav>
 
-<ng-template #content let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title">Ajouter un marqueur</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p>Type d'accident : </p> <input [(ngModel)]="typeAccident" type="text" class="form-control" placeholder="Type">
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Choisir la localisation</button>
-  </div>
-</ng-template>
-
 <div class="row custom">
   <!--The content below is only a placeholder and can be replaced.-->
   <agm-map style="z-index:4" [latitude]="lat" [longitude]="lng" [zoom]="15">
@@ -35,14 +20,13 @@
                 [latitude]="m.lat"
                 [longitude]="m.lng"
                 [markerDraggable]="m.draggable"
-                (markerClick)="clickedMarker(m.lat,m.lng)"
-                (markerClick)="clickedMarker(m.lat, m.lng)"
+                (markerClick)="clickedMarker(m.id)"
                 [label]="m.label">
     </agm-marker>
   </agm-map>
 
   <div class="instructionDiv navbar navbar-light bg-faded" *ngIf="isSearched">
-    <h4 style="text-align: center;"><strong>Instructions</strong> de votre trajet.</h4>
+    <h4 style="text-align: center;border-style:groove; border-radius: 17px;"><strong>Instructions</strong> de votre trajet.</h4>
     <ul>
       <li *ngFor="let inst of instructions, let i = index">
         <p [innerHTML]=inst.instruction></p>
@@ -51,13 +35,11 @@
   </div>
 
   <div class="AccidentDiv navbar navbar-light bg-faded" *ngIf="isAccidents">
-    <h4 style="text-align: center;"><strong>Incidents</strong></h4>
+    <h4 style="text-align: center;border-style:groove; border-radius: 17px;"><strong>Incidents</strong></h4>
 
     <ul>
-      <li *ngFor="let acc of accidents, let i = index">
-        <p [innerHTML]=acc.adr></p>
-        <p [innerHTML]=acc.agg></p>
-        <p [innerHTML]=acc.catr></p>
+      <li style="border-style:groove; border-radius: 17px;" *ngFor="let acc of accidents, let i = index" (click)="open(i)">
+        <p>{{acc.adr}}<br>{{acc.agg}}<br>{{acc.catr}}</p>
       </li>
     </ul>
   </div>

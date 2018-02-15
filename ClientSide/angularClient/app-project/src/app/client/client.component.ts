@@ -6,12 +6,14 @@ import { } from '@types/googlemaps';
 import { MouseEvent } from '@agm/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderService } from '../loader.service';
-
+import { MatDialog } from '@angular/material';
+import { DialogAccidentComponent } from '../dialog-accident/dialog-accident.component';
 
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
-  styleUrls: ['./client.component.css']
+  styleUrls: ['./client.component.css'],
+  entryComponents: [ DialogAccidentComponent ],
 })
 
 export class ClientComponent implements OnInit {
@@ -36,7 +38,7 @@ export class ClientComponent implements OnInit {
   markerStart;
   markerEnd;
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: NgbModal, private loaderService: LoaderService) {
+  constructor(public dialog: MatDialog,private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private modalService: NgbModal, private loaderService: LoaderService) {
     this.isCollapsed = true;
   }
   /*async getAccidents(){
@@ -179,14 +181,11 @@ export class ClientComponent implements OnInit {
     alert("Il manque un point (de départ ou d'arrivée) à votre trajet.");
   }
 
-  clickedMarker(id: string) {
-    console.log(id);
-  }
-
 
   deleteMarkers() {
     //  console.log("Suppression des items inutiles");
     this.markers = [this.markers[0]];
+    this.accidents = [];
   }
   sendPointsToGetInstructionsAndAccidents() {
     this.instructions = this.loaderService.getItinary(this.markerStart, this.markerEnd).subscribe((res) => {
@@ -204,13 +203,16 @@ export class ClientComponent implements OnInit {
           etat: element.properties.adr + ", " + element.properties.agg,
           label: '!',
           draggable: false,
-          id: element.properties._id
+          id: element._id
         });
         this.accidents.push({
           adr: element.properties.adr,
           agg: element.properties.agg,
-          catr: element.properties.catr
-
+          catr: element.properties.catr,
+          id : element._id,
+          date : element.properties.datetime,
+          int : element.properties.int,
+          dom : element.properties.grav,
         });
 
       });
@@ -222,6 +224,34 @@ export class ClientComponent implements OnInit {
     console.log("ngrsogboi");
     this.isAccidents = !this.isAccidents;
   }
+
+
+  getInfo(i){
+    alert(this.accidents[i].adr);
+  }
+
+  clickedMarker(id: string) {
+    for(var i = 0; i < this.accidents.length; i++){
+      if(this.accidents[i].id == id){
+        let dialogRef = this.dialog.open(DialogAccidentComponent,{
+          data:{
+            all :  this.accidents[i]
+          }
+        });
+        break;
+      }
+    }
+  }
+
+  open(i) {
+    let dialogRef = this.dialog.open(DialogAccidentComponent,{
+      data:{
+        all :  this.accidents[i]
+      }
+    });
+  }
+ 
+ 
 }
 // just an interface for type safety.
 interface marker {
