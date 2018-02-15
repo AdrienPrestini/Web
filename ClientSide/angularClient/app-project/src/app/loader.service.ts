@@ -7,7 +7,7 @@ export class LoaderService {
 
   constructor(private http:Http) { }
 
-  private url = "http://192.168.137.62:3000/accidents/";
+  private url = "http://10.212.110.200:3000/accidents/itinerary/";
 
   async getAccidents(): Promise<any>{
     //return await this.http.get(this.url).map((response : Response) => response.json());

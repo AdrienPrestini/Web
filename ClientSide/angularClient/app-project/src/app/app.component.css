@@ -8,7 +8,7 @@ agm-map {
   z-index : 51; 
   height: 88%; 
   width: 30%; 
-  background-color:white;
+  background-color:whitesmoke;
   overflow-y: auto;
 
 }
@@ -16,4 +16,15 @@ agm-map {
 .custom{
   margin-right: 0px;
   margin-left: 0px;
+}
+
+.AccidentDiv{
+  position: absolute; 
+  z-index : 51; 
+  height: 88%; 
+  width: 30%; 
+  background-color:whitesmoke;
+  overflow-y: auto;
+  margin-left: 70%;
+
 }

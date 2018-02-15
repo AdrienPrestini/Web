@@ -29,8 +29,10 @@ export class AppComponent implements OnInit{
   @Input() inputStart: string;
   @Input() inputEnd: string;
   isSearched = false;
+  isAccidents = false;
 
   instructions;
+  accidents = [];
   markerStart;
   markerEnd;
 
@@ -166,7 +168,6 @@ export class AppComponent implements OnInit{
         destination: { lat: this.markerEnd.lat, lng: this.markerEnd.lng }
       }
     //envoyer au serveur les deux points de début et fin pour avoir les instructions et les accidents
-    
     this.sendPointsToGetInstructionsAndAccidents();
     }else {
       this.openDialog();
@@ -178,21 +179,10 @@ export class AppComponent implements OnInit{
     alert("Il manque un point (de départ ou d'arrivée) à votre trajet.");
   }
   
-  clickedMarker(lat: number, lng: number) {
-    /*let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '250px',
-      data: { name: this.name, animal: this.animal }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
-    });*/
+  clickedMarker(id : string) {
+    console.log(id);
   }
 
-  mapClicked($event: MouseEvent) {
-    
-  }
 
   deleteMarkers(){
 //  console.log("Suppression des items inutiles");
@@ -207,18 +197,30 @@ export class AppComponent implements OnInit{
       this.isSearched = true;     
       //on remplit les marqueurs 
       res.dangerPoint.forEach(element => {
+        //ajouter l'accident dans la liste this.accidents
         this.markersAccidents.push({
           lat: element.properties.coordonnees[0],
           lng: element.properties.coordonnees[1],
-          etat: element.properties.adr +"\n" + element.properties.agg,
+          etat: element.properties.adr +", " + element.properties.agg,
           label : '!',
           draggable: false,
           id : element.properties._id
-        })
+        });
+        this.accidents.push({
+          adr: element.properties.adr,
+          agg : element.properties.agg,
+          catr : element.properties.catr
+
+        });
         
       });
 
     });
+  }
+
+  displayAccidents(){
+    console.log("ngrsogboi");
+    this.isAccidents = !this.isAccidents;
   }
 }
 // just an interface for type safety.
