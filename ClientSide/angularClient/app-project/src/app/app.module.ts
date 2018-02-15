@@ -9,14 +9,40 @@ import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ManagementComponent } from './management/management.component';
+
+import { RouterModule, Routes } from '@angular/router';
+import { ClientComponent } from './client/client.component';
+
+const appRoutes: Routes = [
+  { path: 'client', component: AppComponent },
+  { path: 'management', component: ManagementComponent },
+  {
+    path: '',
+    redirectTo: '/client',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: '/client',
+    pathMatch: 'full'
+  }
+];
+
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     FooterComponent,
+    ManagementComponent,
+    ClientComponent,
   ],
   imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // <-- debugging purposes only
+    ),
     BrowserModule,
     CommonModule,
     FormsModule,
