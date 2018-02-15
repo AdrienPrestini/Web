@@ -28,7 +28,7 @@
 
 
 <!--The content below is only a placeholder and can be replaced.-->
-<agm-map style="z-index:1" [latitude]="lat" [longitude]="lng" [zoom]="15" (mapClick)="mapClicked($event)">
+<agm-map style="z-index:1" [latitude]="lat" [longitude]="lng" [zoom]="15">
     <agm-direction *ngIf="dir" [origin]="dir.origin" [destination]="dir.destination"></agm-direction>
     
   <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
@@ -51,7 +51,7 @@
     [latitude]="m.lat"
     [longitude]="m.lng"
     [markerDraggable]="m.draggable"
-    (markerClick)="clickedMarker(m.lat,m.lng)"
+    (markerClick)="clickedMarker(m.id)"
     [label]="m.label">
 
     <agm-info-window>
@@ -60,5 +60,3 @@
 
   </agm-marker>
 </agm-map>
-
-
