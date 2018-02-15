@@ -16,6 +16,7 @@ router.post('/', newAccident);
 //MODIFY ACCIDENT
 router.put('/:_id', updateAccident);
 //DELETE ACCIDENT
+router.delete('/:_id', removeAccident);
 
 //ADD COMMENT ACCIDENT
 //DELETE COMMENT ACCIDENT
@@ -88,6 +89,19 @@ function updateAccident(req, res){
     })
     .catch((error) => {
         console.log("Error while updating accident");
+        res.status(400).send(error);
+    });
+}
+
+/*
+Fonction removeAccident
+ */
+function removeAccident(req, res){
+    accidentService.removeAccident(req.params._id).then((result) => {
+        res.send(result);
+    })
+    .catch((error) => {
+        console.log("Error while removing accident");
         res.status(400).send(error);
     });
 }
