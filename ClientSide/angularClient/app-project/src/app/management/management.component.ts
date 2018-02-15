@@ -24,4 +24,15 @@ export class ManagementComponent implements OnInit {
     
   }
 
+  edit(index) {
+    console.log('edit index ' + index);
+  }
+
+  remove(index) {
+    console.log('delete index ' + index);
+    this.managementService.removeAccidents(this.accidents[index]._id).subscribe((res) => {
+      
+    });
+    this.accidents.splice(index, 1);
+  }
 }
