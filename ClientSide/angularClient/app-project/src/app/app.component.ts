@@ -185,22 +185,10 @@ export class AppComponent implements OnInit{
     alert("Il manque un point (de départ ou d'arrivée) à votre trajet.");
   }
   
-  clickedMarker(lat: number, lng: number) {
-    console.log(this.markersAccidents)
-   }
-   mapClicked($event: MouseEvent) {
-    if(this.isClicked){
-      this.isClicked = !this.isClicked;
-      this.markersAccidents.push({
-        lat: $event.coords.lat,
-        lng: $event.coords.lng,
-        label:"!",
-        etat : this.typeAccident,
-        draggable: false,
-        
-      });
-      this.typeAccident = "";
-    }   
+  clickedMarker(id : string) {
+    //Demander au serveur des informations sur le marqueur @id
+    console.log(id);
+    
   }
 
   deleteMarkers(){
