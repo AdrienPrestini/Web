@@ -24,7 +24,7 @@ router.put('/:_id', updateAccident); //MODIFY ACCIDENT
 router.delete('/:_id', removeAccident);
 
 
-router.post('/comment', newComment); //ADD COMMENT ACCIDENT
+router.post('/:_idaccident/comment', newComment); //ADD COMMENT ACCIDENT
 router.delete('/:_idaccident/comment/:_idcomment', deleteComment); //DELETE COMMENT ACCIDENT
 
 
@@ -88,7 +88,7 @@ function accidentInCommune(req, res) {
 
 function newComment(req, res) {
     console.log("Comment adding");
-    accidentService.addComment(req.body).then((result) => {
+    accidentService.addComment(req.params._idaccident, req.body).then((result) => {
         console.log("Comment added");
         res.send(result);
     })

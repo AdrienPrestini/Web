@@ -203,10 +203,10 @@ function getAccidentsInCommune(idCom) {
     });
 }
 
-function addComment(infos) {
+function addComment(idaccident, infos) {
     return new Promise((resolve, reject) => {
         accidents.update({
-            "_id" : new ObjectId(infos._idaccident) 
+            "_id" : new ObjectId(idaccident) 
         },
         {
             $push : {
