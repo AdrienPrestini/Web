@@ -18,7 +18,7 @@ import { DialogAccidentComponent } from '../dialog-accident/dialog-accident.comp
 
 export class ClientComponent implements OnInit {
 
-  titreProjet: string = 'Client Side';
+  titreProjet: string = 'Client Side part';
   lat: number = 51.678418;
   lng: number = 7.809007;
   isCollapsed: boolean;
@@ -45,7 +45,7 @@ export class ClientComponent implements OnInit {
     this.instructions = await this.loaderService.getAccidents();
     console.log(this.instructions.data);
   }*/
-  async ngOnInit() {
+  ngOnInit() {
     //this.getAccidents();
     // on récupère la localisation du client
     if (navigator.geolocation) {
@@ -59,14 +59,7 @@ export class ClientComponent implements OnInit {
           label: 'ici',
           draggable: false,
         });
-        //examples TODO : Remove later. Is for testing event click marker
-        this.markersAccidents.push({
-          lat: this.lat,
-          lng: this.lng,
-          etat: "Vous êtes ici !",
-          label: 'ici',
-          draggable: false,
-        });
+        this.getAccidents();
       });
     }
 
@@ -187,6 +180,42 @@ export class ClientComponent implements OnInit {
     this.markers = [this.markers[0]];
     this.accidents = [];
   }
+
+  getAccidents(){
+    console.log("On veut les accidents proches de notre position");
+    console.log(this.markers[0]);
+    this.instructions = this.loaderService.getAccidentsRadius(this.markers[0]).subscribe((res) => {
+        this.instructions = [];
+        console.log(res);
+        /*this.instructions = res.steps;
+        console.log(this.instructions);
+        this.isSearched = true;
+        //on remplit les marqueurs 
+        res.dangerPoint.forEach(element => {
+          //ajouter l'accident dans la liste this.accidents
+          this.markersAccidents.push({
+            lat: element.properties.coordonnees[0],
+            lng: element.properties.coordonnees[1],
+            etat: element.properties.adr + ", " + element.properties.agg,
+            label: '!',
+            draggable: false,
+            id: element._id
+          });
+          this.accidents.push({
+            adr: element.properties.adr,
+            agg: element.properties.agg,
+            catr: element.properties.catr,
+            id : element._id,
+            date : element.properties.datetime,
+            int : element.properties.int,
+            dom : element.properties.grav,
+          });
+  
+        });*/
+  
+      });
+  }
+
   sendPointsToGetInstructionsAndAccidents() {
     this.instructions = this.loaderService.getItinary(this.markerStart, this.markerEnd).subscribe((res) => {
       this.instructions = [];
@@ -225,11 +254,6 @@ export class ClientComponent implements OnInit {
     this.isAccidents = !this.isAccidents;
   }
 
-
-  getInfo(i){
-    alert(this.accidents[i].adr);
-  }
-
   clickedMarker(id: string) {
     for(var i = 0; i < this.accidents.length; i++){
       if(this.accidents[i].id == id){
@@ -244,6 +268,7 @@ export class ClientComponent implements OnInit {
   }
 
   open(i) {
+    console.log(this.lat+"     "+ this.lng);
     let dialogRef = this.dialog.open(DialogAccidentComponent,{
       data:{
         all :  this.accidents[i]
