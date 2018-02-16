@@ -5,7 +5,7 @@
     <input autocorrect="off" #searchStart type="text" id="form1" class="form-control col-lg-3 " [(ngModel)]="inputStart" placeholder="Début du voyage">
     <input autocorrect="off" #searchEnd type="text" id="form2" class="form-control col-lg-3" [(ngModel)]="inputEnd" placeholder="Fin du voyage">
     <button class="btn-outline-success form-control col-lg-2" type="button" (click)="computePath()">Rechercher</button>
-    <a (click)="displayAccidents()" class="navbar-brand"><img width="45" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="></a>
+    <button class="btn-outline-warning form-control col-lg-2" type="button" (click)="displayAccidents()">Accidents</button>
 
   </div>
 </nav>
@@ -20,8 +20,11 @@
                 [latitude]="m.lat"
                 [longitude]="m.lng"
                 [markerDraggable]="m.draggable"
-                (markerClick)="clickedMarker(m.id)"
                 [label]="m.label">
+                <agm-info-window>
+                  <strong>{{m.etat}}</strong>
+                  <button class="btn-outline-success" (click)="clickedMarker(m.id)">Détails</button>
+                </agm-info-window>
     </agm-marker>
   </agm-map>
 
@@ -39,7 +42,9 @@
 
     <ul>
       <li style="border-style:groove; border-radius: 17px;" *ngFor="let acc of accidents, let i = index" (click)="open(i)">
-        <p>{{acc.adr}}<br>{{acc.agg}}<br>{{acc.catr}}</p>
+        <p>{{acc.adr}}</p>
+        <p>{{acc.agg}}</p>
+        <p>{{acc.catr}}</p>
       </li>
     </ul>
   </div>
