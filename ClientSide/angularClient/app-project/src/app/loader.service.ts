@@ -23,7 +23,8 @@ export class LoaderService {
   }
 
   getAccidentsRadius(pointA){
-    var urlRequest = this.url +"accidents/circle/" +pointA.lat + "/"+ pointA.lng + "/1000";
+    ///accidents/polygon?lat_center=43.296482&lng_center=5.36978&distance=1500
+    var urlRequest = this.url +"accidents/polygon?lat_center=" +pointA.lat + "&lng_center="+ pointA.lng + "&distance=1500";
     console.log(urlRequest);
     return this.http.get(urlRequest).map((response : Response) => response.json());
   }

@@ -182,16 +182,9 @@ export class ClientComponent implements OnInit {
   }
 
   getAccidents(){
-    console.log("On veut les accidents proches de notre position");
-    console.log(this.markers[0]);
     this.instructions = this.loaderService.getAccidentsRadius(this.markers[0]).subscribe((res) => {
-        this.instructions = [];
-        console.log(res);
-        /*this.instructions = res.steps;
-        console.log(this.instructions);
-        this.isSearched = true;
         //on remplit les marqueurs 
-        res.dangerPoint.forEach(element => {
+        res.forEach(element => {
           //ajouter l'accident dans la liste this.accidents
           this.markersAccidents.push({
             lat: element.properties.coordonnees[0],
@@ -211,7 +204,7 @@ export class ClientComponent implements OnInit {
             dom : element.properties.grav,
           });
   
-        });*/
+        });
   
       });
   }
