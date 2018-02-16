@@ -5,6 +5,7 @@ var accidentService = require('../services/accidentsService');
 //PROPERTIES GET METHODS
 router.get('/', list_all_accidents);//Tous les accidents
 router.get('/itinerary/'/*:lat_start/:lng_start/:lat_end/:lng_end'*/, accidentsOnItinerary); //GET ACCIDENTS ON ITINERARY
+router.get('/polygon/', accidentsInPolygon); 
 router.get('/:_id', accidentById);//Accident par ID
 router.get('/departement/:_idDep', accidentInDepartement);
 router.get('/region/:_idReg', accidentInRegion);
@@ -16,7 +17,8 @@ router.get('/commune/:_idCom', accidentInCommune);
 
 //GEOSPATIAL GET METHODS
 
-router.get('/circle/:lat_center/:lng_center/:radius', accidentsInRadius); //GET ACCIDENTS IN CIRCLE
+//router.get('/circle/:lat_center/:lng_center/:radius', accidentsInRadius); //GET ACCIDENTS IN CIRCLE
+//GET ACCIDENTS IN CIRCLE
 
 router.post('/', newAccident); //ADD ACCIDENT
 router.put('/:_id', updateAccident); //MODIFY ACCIDENT
@@ -31,7 +33,18 @@ router.delete('/:_idaccident/comment/:_idcomment', deleteComment); //DELETE COMM
 module.exports = router;
 
 function accidentsInRadius(req, res) {
+    console.log('IN RADIUS');
     accidentService.getAccidentInRadius(req.params.lat_center, req.params.lng_center, req.params.radius)
+    .then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        console.log(error);
+        res.status(400).send(error);
+    });
+}
+
+function accidentsInPolygon(req, res) {
+    accidentService.getAccidentInPolygon(req.query.lat_center, req.query.lng_center, req.query.distance)
     .then((result) => {
         res.send(result);
     }).catch((error) => {

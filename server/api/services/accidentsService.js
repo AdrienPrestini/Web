@@ -1,3 +1,4 @@
+
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 
@@ -6,6 +7,7 @@ var util = require('util');
 var fetch = require('node-fetch');
 
 var polygonTools = require('../../tools/polygon');
+var gpsPointsTools = require('../../tools/gpsPoints');
 
     
 var RouteBoxer = require('geojson.lib.routeboxer'),
@@ -40,6 +42,7 @@ service.newAccident = newAccident;
 service.getAccidentInRadius = getAccidentInRadius;
 service.updateAccident = updateAccident;
 service.removeAccident = removeAccident;
+service.getAccidentInPolygon = getAccidentInPolygon;
 
 service.addComment = addComment;
 service.deleteComment = deleteComment;
@@ -58,6 +61,25 @@ function getAllAccidents() {
             resolve(docs);
         });
     });
+}
+
+function getAccidentInPolygon(lat, lng, distance) {
+    var polygon = gpsPointsTools.getPolygonAroundLocation(lat, lng, distance);
+    return new Promise((resolve, reject) => {
+        accidents.find({geometry: { 
+            $geoIntersects: {
+                $geometry: {
+                    "type": "Polygon",
+                    "coordinates": [polygon]
+                }
+            }
+        }}).toArray(function(err, docs) {
+            if(err)
+                reject(err);
+            //console.log(docs.length);
+            resolve(docs);
+        });
+    }) 
 }
 
 function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
@@ -141,11 +163,45 @@ function getAccidentById(id){
 }
 
 function getAccidentInRadius(lat_center, lng_center, radius) {
-    var radiusKM = radius/1000;
+    console.log(parseFloat(lat_center));
+    console.log(parseFloat(lng_center));
     return new Promise((resolve, reject) => {
-        accidents.find( {
-            geometry: { $geoWithin: { $centerSphere: [ [ lng_center, lat_center ], radiusKM/6,378.1 ] } }
-        })
+        accidents.find({geometry: { 
+            $geoIntersects: {
+                $geometry: {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                          [
+                            5.33935546875,
+                            43.25345500174343
+                          ],
+                          [
+                            5.484580993652344,
+                            43.25345500174343
+                          ],
+                          [
+                            5.484580993652344,
+                            43.35938481464255
+                          ],
+                          [
+                            5.33935546875,
+                            43.35938481464255
+                          ],
+                          [
+                            5.33935546875,
+                            43.25345500174343
+                          ]
+                        ]
+                      ]
+                }
+            }
+        }}).toArray(function(err, docs) {
+            if(err)
+                reject(err);
+            console.log(docs.length);
+            resolve(docs);
+        });
     }) 
 }
 
@@ -159,7 +215,7 @@ function getAccidentsInRegion(idRegion) {
         db.collection("regions").findOne({'_id': new ObjectId(idRegion)}, (err, reg) => {
             if(err) reject(err);
             accidents.find({ 
-                location: { 
+                geometry: { 
                     $geoWithin: { 
                         $geometry: reg.geometry 
                     } 
@@ -213,6 +269,7 @@ function getAccidentsInCommune(idCom) {
         });   
     });
 }
+
 
 function addComment(idaccident, infos) {
     return new Promise((resolve, reject) => {
