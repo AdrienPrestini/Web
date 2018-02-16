@@ -1,0 +1,18 @@
+<h2>Détails de l'accident</h2>
+<p>Survenu le {{date}}</p>
+<p>Accident : </p>
+<ul>
+  <li>
+    <p>Adresse : {{adresse}}</p>
+    <p>agg : {{agg}}</p>
+    <p>int : {{int}}</p>
+    <p>dom : {{dom}}</p>
+  </li>
+</ul>
+<p>Ajouter un commentaire</p>
+<textarea [(ngModel)]="commentaire" matInput placeholder="Autosize textarea" matAutosizeMinRows="2"
+            matAutosizeMaxRows="5"></textarea>
+<br>
+<br>
+<button mat-raised-button (click)="dialogRef.close()">Fermer</button>
+<button mat-raised-button (click)="envoyer();dialogRef.close()">Envoyer</button>

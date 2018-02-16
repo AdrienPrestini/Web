@@ -7,8 +7,8 @@ export class LoaderService {
 
   constructor(private http:Http) { }
 
-  private url = "http://10.212.110.200:3000/accidents/itinerary/";
-
+  private url = "http://10.212.110.200:3000/accidents";
+//accidents?latstart=43.692887&lngstart=7.249432&latend=45.162432&lngend=5.715637
   async getAccidents(): Promise<any>{
     //return await this.http.get(this.url).map((response : Response) => response.json());
     const response = await this.http.get(this.url).toPromise();
@@ -16,7 +16,7 @@ export class LoaderService {
   }
 
   getItinary(pointA, pointB){
-    var urlRequest = this.url + pointA.lat + "/"+ pointA.lng + "/" + pointB.lat + "/"+ pointB.lng;
+    var urlRequest = this.url +"/itinerary?latstart=" +pointA.lat + "&lngstart="+ pointA.lng + "&latend=" + pointB.lat + "&lngend="+ pointB.lng;
     console.log(urlRequest);
     return this.http.get(urlRequest).map((response : Response) => response.json());
     

@@ -9,18 +9,49 @@ import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ManagementComponent } from './management/management.component';
+
+import { RouterModule, Routes } from '@angular/router';
+import { ClientComponent } from './client/client.component';
+
 import { HttpModule } from '@angular/http';
 //import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { LoaderService } from './loader.service';
+import { DialogAccidentComponent} from './dialog-accident/dialog-accident.component';
+import { MatDialogModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
+
+const appRoutes: Routes = [
+  { path: 'client', component: ClientComponent },
+  { path: 'management', component: ManagementComponent },
+  {
+    path: '',
+    redirectTo: '/client',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: '/client',
+    pathMatch: 'full'
+  }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     FooterComponent,
-    
+    ManagementComponent,
+    ClientComponent,
+    DialogAccidentComponent
   ],
   imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: false } // <-- debugging purposes only
+    ),
     BrowserModule,
     CommonModule,
     FormsModule,
@@ -33,9 +64,12 @@ import { LoaderService } from './loader.service';
     AgmDirectionModule,
     CollapseModule,
     NgbModule.forRoot(),
+    BrowserAnimationsModule,
+    MatDialogModule
     //AgmJsMarkerClustererModule
   ],
   providers: [LoaderService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogAccidentComponent]
 })
 export class AppModule { }
