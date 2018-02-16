@@ -33,6 +33,7 @@ MongoClient.connect(url, function(err, client) {
 
 var service = {};
 
+service.getAllAccidents = getAllAccidents;
 service.getAccidentsOnItinerary = getAccidentsOnItinerary;
 service.getAccidentById = getAccidentById;
 service.newAccident = newAccident;
@@ -48,6 +49,16 @@ service.accidentInDepartement = getAccidentsInDepartement;
 service.accidentInCommune = getAccidentsInCommune;
 
 module.exports = service;
+
+function getAllAccidents() {
+    return new Promise((resolve, reject) => {
+        accidents.find({}).toArray(function(err, docs) {
+            if(err)
+                reject(err);
+            resolve(docs);
+        });
+    });
+}
 
 function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
     return new Promise((resolve, reject) => {

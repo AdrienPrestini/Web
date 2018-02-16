@@ -3,7 +3,8 @@ var router = express.Router();
 var accidentService = require('../services/accidentsService');
 
 //PROPERTIES GET METHODS
-//router.get('/', list_all_accidents);//Tous les accidents
+router.get('/', list_all_accidents);//Tous les accidents
+router.get('/itinerary/'/*:lat_start/:lng_start/:lat_end/:lng_end'*/, accidentsOnItinerary); //GET ACCIDENTS ON ITINERARY
 router.get('/:_id', accidentById);//Accident par ID
 router.get('/departement/:_idDep', accidentInDepartement);
 router.get('/region/:_idReg', accidentInRegion);
@@ -14,9 +15,8 @@ router.get('/commune/:_idCom', accidentInCommune);
 
 
 //GEOSPATIAL GET METHODS
-router.get('/itinerary/:lat_start/:lng_start/:lat_end/:lng_end', accidentsOnItinerary); //GET ACCIDENTS ON ITINERARY
-router.get('/circle/:lat_center/:lng_center/:radius', accidentsInRadius); //GET ACCIDENTS IN CIRCLE
 
+router.get('/circle/:lat_center/:lng_center/:radius', accidentsInRadius); //GET ACCIDENTS IN CIRCLE
 
 router.post('/', newAccident); //ADD ACCIDENT
 router.put('/:_id', updateAccident); //MODIFY ACCIDENT
@@ -41,7 +41,7 @@ function accidentsInRadius(req, res) {
 }
 
 function accidentsOnItinerary(req, res) {
-    accidentService.getAccidentsOnItinerary(req.params.lat_start, req.params.lng_start, req.params.lat_end, req.params.lng_end)
+    accidentService.getAccidentsOnItinerary(req.query.latstart, req.query.lngstart, req.query.latend, req.query.lngend)
     .then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -110,6 +110,14 @@ function deleteComment(req, res) {
     });
 }
 
+function list_all_accidents(req, res) {
+    accidentService.getAllAccidents().then((result) => {
+        res.send(result);
+    }).catch((error) => {
+        res.status(400).send(error);
+    });
+}
+
 /*
 Fonction newAccident
 Le body de la requête doit avoir les informations suivantes :
@@ -152,6 +160,7 @@ function updateAccident(req, res){
 Fonction removeAccident
  */
 function removeAccident(req, res){
+    console.log("delete");
     accidentService.removeAccident(req.params._id).then((result) => {
         res.send(result);
     })
