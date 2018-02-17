@@ -9,7 +9,6 @@ import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ManagementComponent } from './management/management.component';
 
 import { RouterModule, Routes } from '@angular/router';
 import { ClientComponent } from './client/client.component';
@@ -21,11 +20,15 @@ import { DialogAccidentComponent} from './dialog-accident/dialog-accident.compon
 import { MatDialogModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ManagementBarComponent } from './management-bar/management-bar.component';
+import { ManagementTableComponent } from './management-table/management-table.component';
+import { ManagementMapComponent } from './management-map/management-map.component';
+
 
 
 const appRoutes: Routes = [
   { path: 'client', component: ClientComponent },
-  { path: 'management', component: ManagementComponent },
+  { path: 'management', component: ManagementBarComponent },
   {
     path: '',
     redirectTo: '/client',
@@ -43,9 +46,11 @@ const appRoutes: Routes = [
     AppComponent,
     NavComponent,
     FooterComponent,
-    ManagementComponent,
     ClientComponent,
-    DialogAccidentComponent
+    DialogAccidentComponent,
+    ManagementBarComponent,
+    ManagementTableComponent,
+    ManagementMapComponent
   ],
   imports: [
     RouterModule.forRoot(

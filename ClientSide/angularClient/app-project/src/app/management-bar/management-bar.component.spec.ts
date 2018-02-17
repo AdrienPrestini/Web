@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManagementComponent } from './management.component';
+import { ManagementBarComponent } from './management-bar.component';
 
-describe('ManagementComponent', () => {
-  let component: ManagementComponent;
-  let fixture: ComponentFixture<ManagementComponent>;
+describe('ManagementBarComponent', () => {
+  let component: ManagementBarComponent;
+  let fixture: ComponentFixture<ManagementBarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManagementComponent ]
+      declarations: [ ManagementBarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManagementComponent);
+    fixture = TestBed.createComponent(ManagementBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
