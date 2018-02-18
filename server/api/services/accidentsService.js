@@ -314,8 +314,14 @@ function deleteComment(idaccident, idcomment) {
 }
 
 function formatAccidentModel(infos){
-    var accident = {geometry:{}, properties:{}};
+    var accident = {geometry:{}, properties:{}, comments: []};
+    accident.geometry.type = "Point";
     accident.geometry.coordinates = [infos.long, infos.lat];
+
+    accident.properties.datetime = infos.datetime;
+    accident.properties.adr = infos.adr;
+    accident.properties.nbv = infos.nbv;
+    accident.properties.code_postal = infos.code_postal;
     accident.properties.coord = [infos.lat, infos.long];
     accident.properties.libellevoie = infos.libelle;
     return accident;
