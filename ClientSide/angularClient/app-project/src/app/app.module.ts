@@ -25,6 +25,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ManagementBarComponent } from './management-bar/management-bar.component';
 import { ManagementTableComponent } from './management-table/management-table.component';
 import { ManagementMapComponent } from './management-map/management-map.component';
+import { ManagementComponent } from './management/management.component';
+import { AccidentPopupComponent } from './accident-popup/accident-popup.component';
 import { AccidentCommentComponent } from './accident-comment/accident-comment.component';
 import {MatInputModule} from '@angular/material/input';
 import { AlertComponent } from './alert/alert.component';
@@ -32,7 +34,7 @@ import { AlertComponent } from './alert/alert.component';
 
 const appRoutes: Routes = [
   { path: 'client', component: ClientComponent },
-  { path: 'management', component: ManagementBarComponent },
+  { path: 'management', component: AccidentPopupComponent },
   {
     path: '',
     redirectTo: '/client',
@@ -54,6 +56,9 @@ const appRoutes: Routes = [
     DialogAccidentComponent,
     ManagementBarComponent,
     ManagementTableComponent,
+    ManagementMapComponent,
+    ManagementComponent,
+    AccidentPopupComponent
     ManagementMapComponent,
     AccidentCommentComponent,
     AlertComponent
