@@ -23,12 +23,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ManagementBarComponent } from './management-bar/management-bar.component';
 import { ManagementTableComponent } from './management-table/management-table.component';
 import { ManagementMapComponent } from './management-map/management-map.component';
+import { ManagementComponent } from './management/management.component';
+import { AccidentPopupComponent } from './accident-popup/accident-popup.component';
 
 
 
 const appRoutes: Routes = [
   { path: 'client', component: ClientComponent },
-  { path: 'management', component: ManagementBarComponent },
+  { path: 'management', component: AccidentPopupComponent },
   {
     path: '',
     redirectTo: '/client',
@@ -50,7 +52,9 @@ const appRoutes: Routes = [
     DialogAccidentComponent,
     ManagementBarComponent,
     ManagementTableComponent,
-    ManagementMapComponent
+    ManagementMapComponent,
+    ManagementComponent,
+    AccidentPopupComponent
   ],
   imports: [
     RouterModule.forRoot(

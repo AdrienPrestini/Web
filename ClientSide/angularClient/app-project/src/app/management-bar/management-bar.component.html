@@ -11,8 +11,8 @@
         <h2>Filtrer</h2>
       </div>
       <div class="col-xs-6">
-        <button class="btn btn-default">Rechercher</button>
-        <button class="btn btn-default">Ajouter nouvelle accident</button>
+        <button class="btn btn-default" type="button" (click)="rechercherButton()">Rechercher</button>
+        <button class="btn btn-default" type="button" (click)="ajouterButton()">Ajouter nouvelle accident</button>
       </div>
     </div>
     <div class="row">
@@ -25,4 +25,4 @@
     </div>
   </div>
 </div>
-<app-management-table></app-management-table>
+<app-management-table #managementTable></app-management-table>

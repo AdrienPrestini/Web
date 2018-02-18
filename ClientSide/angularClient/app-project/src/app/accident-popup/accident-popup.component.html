@@ -1,0 +1,41 @@
+<div class="panel panel-default text-center">
+  <div class="panel-heading">
+    {{mode}}
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-4"></div>
+      <div class="col-xs-2">
+        Longitude <input type="text" id="longitude" class="form-control" [(ngModel)]="longitude" />
+      </div>
+      <div class="col-xs-2">
+        Latitude <input type="text" id="latitude" class="form-control" [(ngModel)]="latitude" />
+      </div>
+      <div class="col-xs-4"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"></div>
+      <div class="col-xs-2">
+        Code Postal <input type="text" id="postal" class="form-control" [(ngModel)]="postal"/>
+      </div>
+      <div class="col-xs-2">
+        Adresse <input type="text" id="adresse" class="form-control" [(ngModel)]="adresse"/>
+      </div>
+      <div class="col-xs-4"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4"></div>
+      <div class="col-xs-2">
+        Date <input type="date" id="date" class="form-control" [(ngModel)]="date"/>
+      </div>
+      <div class="col-xs-2">
+        Nombre de véhicule accidenté <input type="text" id="nbaccidente" class="form-control" [(ngModel)]="nbv"/>
+      </div>
+      <div class="col-xs-4"></div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-default" (click)="applyAction()">{{action}}</button>
+    <button class="btn btn-default" (click)="annuler()">Annuler</button>
+  </div>
+</div>
