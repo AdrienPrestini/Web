@@ -12,8 +12,7 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 const url = 'mongodb://localhost:27017';
-console.log(config.DBName);
-const dbName = 'accidents_test';
+const dbName = config.DBName;
 const collectionName = 'Accidents';
 var accidents;
 
@@ -36,7 +35,7 @@ describe('Accidents', () => {
         });    
     });
 
-    describe('/GET basic', () => {
+    describe('Basic operation on empty DB', () => {
         it('it should GET empty result', (done) => {
             chai.request(server)
                 .get('/accidents/')
@@ -47,9 +46,7 @@ describe('Accidents', () => {
                     done();
                 });
         });
-    });
 
-    describe('/POST accident', () => {
         it('it should create an accident', (done) => {
             //POST
             chai.request(server)
@@ -84,103 +81,81 @@ describe('Accidents', () => {
         });
     });
 
-    /*describe('/PUT', () => {
-        it('it should create an accident', (done) => {
-            done();
-        });
-
-        it('it should update the created accident', (done) => {
-            //PUT
-            chai.request(server)
-            .put('/accidents/5a78a49ee9eaca2f596687e4')
-            .send({
-                datetime: "2015-09-16T09:45:00+02:00",
-                lat: 43.705377028411945,
-                long: 7.195670121876096,
-                code_postal: "06410",
-                comments: [],
-                adr: "06 rue du 06",
-                nbv: 7,
-                hrmm: "09:45"
-            })
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.body.ok.should.be.eql(1);
-                res.body.nModified.should.be.eql(1);
+    describe('Operation on filled DB', () => {
+        var accidentID;
+        beforeEach((done) => {
+            accidents.insertOne({ 
+                "geometry" : { 
+                    "type" : "Point", 
+                    "coordinates" : [ 7.195670121876096, 43.705377028411945 ] 
+                }, 
+                "properties" : { 
+                    "datetime" : "2015-09-16T09:45:00+02:00", 
+                    "adr" : "06 rue du 06", 
+                    "nbv" : 6, 
+                    "code_postal" : "06410", 
+                    "coord" : [ 43.705377028411945, 7.195670121876096 ], 
+                    "hrmn" : "09:45" 
+                }, 
+                "comments" : [] 
+            }).then((r) => {
+                accidentID = r.insertedId;
                 done();
-            });
+            });   
         });
-    });
-       
-    describe('/DELETE', () => {
-        it('it should create an accident', (done) => {
-            done();
-        });
-
-        it('it should delete the created accident', (done) => {
-            //DELETE
-            chai.request(server)
-            .post('/accidents')
-            .send({
-                datetime: "2015-09-16T09:45:00+02:00",
-                lat: 43.705377028411945,
-                long: 7.195670121876096,
-                code_postal: "06410",
-                comments: [],
-                adr: "06 rue du 06",
-                nbv: 6,
-                hrmm: "09:45"
-            })
-            .end((err, res) => {
-                res.should.have.status(200);
-
+    
+        describe('/PUT', () => {
+            it('it should update an accident', (done) => {
+                //PUT
                 chai.request(server)
-                .delete('/accidents/'+res.body)
-                .end((err, res) => {
+                .put('/accidents/'+accidentID)
+                .send({ 
+                    "geometry" : { "type" : "Point", "coordinates" : [ 5.78, 47.95 ] }, 
+                    "properties" : { 
+                        "datetime" : "2015-09-16T09:45:00+02:00", 
+                        "adr" : "06 rue du 06", 
+                        "nbv" : 7, 
+                        "code_postal" : "06410", 
+                        "coord" : [ 47.95, 5.78 ], 
+                        "hrmn" : "12:45" 
+                    }, 
+                    "comments" : [], 
+                }).end((err, res) => {
                     res.should.have.status(200);
                     res.body.ok.should.be.eql(1);
-                    done();
-                });
-            }); 
-        });
-    });*/
-
-        /*it('it should return all accidents in department Var', (done) => {
-            chai.request(server)
-                .get('/administrativeAreas/departements/Var')
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.length.should.be.eql(1);
+                    res.body.nModified.should.be.eql(1);
                     chai.request(server)
-                        .get('/accidents/departement/'+res.body[0]._id)
+                        .get('/accidents/'+accidentID)
                         .end((err, res) => {
                             res.should.have.status(200);
-                            res.body.length.should.be.eql(5);
+                            res.body.properties.should.have.property('adr').eql('06 rue du 06');
+                            res.body.properties.should.have.property('nbv').eql(7);
+                            res.body.properties.should.have.property('code_postal').eql("06410");
+                            res.body.properties.should.have.property('hrmn').eql("12:45");
+                            res.body.properties.coord[1].should.be.eql(5.78);
+                            res.body.properties.coord[0].should.be.eql(47.95);
                             done();
                         });
                 });
-            //GET
+            });
         });
-        */
-
-        
-
-        
-
-        after(()=> {
-            chai.request(server)
-            .put('/accidents/5a78a49ee9eaca2f596687e4')
-            .send({
-                datetime: "2015-09-16T09:45:00+02:00",
-                lat: 43.705377028411945,
-                long: 7.195670121876096,
-                code_postal: "06410",
-                comments: [],
-                adr: "06 rue du 06",
-                nbv: 6,
-                hrmm: "09:45"
-            })
-            .end((err, res) => {
+           
+        describe('/DELETE', () => {
+            it('it should delete an accident', (done) => {
+                chai.request(server)
+                .delete('/accidents/'+accidentID)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.ok.should.be.eql(1);
+                    chai.request(server)
+                        .get('/accidents/')
+                        .end((err, res) => {
+                            res.should.have.status(200);
+                            res.body.should.be.a('array');
+                            res.body.length.should.be.eql(0);
+                            done();
+                        });
+                });
             });
         });
     });

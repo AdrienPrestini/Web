@@ -1,12 +1,14 @@
 delete process.env.GOOGLE_API_KEY;
-require('dotenv').config();
-var config = require('config');
-process.env.DB_NAME = 'accidents';
-var cors = require('cors')
 
+require('dotenv').config();
+
+var config = require('config');
+var cors = require('cors')
 var express = require('express');
+
 var app = express();
 app.use(cors());
+
 var bodyParser = require('body-parser');
 
 port = config.Server_Port;
