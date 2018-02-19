@@ -58,7 +58,7 @@ const appRoutes: Routes = [
     ManagementTableComponent,
     ManagementMapComponent,
     ManagementComponent,
-    AccidentPopupComponent
+    AccidentPopupComponent,
     ManagementMapComponent,
     AccidentCommentComponent,
     AlertComponent
@@ -87,6 +87,6 @@ const appRoutes: Routes = [
   ],
   providers: [LoaderService, LoaderCommentsService, AlertService],
   bootstrap: [AppComponent],
-  entryComponents: [DialogAccidentComponent, AccidentCommentComponent]
+  entryComponents: [DialogAccidentComponent, AccidentCommentComponent, AccidentPopupComponent]
 })
 export class AppModule { }

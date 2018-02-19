@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ManagementService } from '../services/management.service';
 
+import { MatDialogRef } from '@angular/material';
+
 @Component({
   selector: 'app-accident-popup',
   templateUrl: './accident-popup.component.html',
@@ -22,7 +24,7 @@ export class AccidentPopupComponent implements OnInit {
   @Input() date: Date;
   @Input() nbv: number;
 
-  constructor(private managementService: ManagementService) { }
+  constructor(private managementService: ManagementService, public dialogRef: MatDialogRef<AccidentPopupComponent>) { }
 
   ngOnInit() {
   }
@@ -54,18 +56,19 @@ export class AccidentPopupComponent implements OnInit {
     console.log(this.action);
     if (this.action == 'Ajouter') {
       this.buildJson();
-      this.managementService.addAccident(this.accident);
+      //this.managementService.addAccident(this.accident);
     } else if (this.action == 'Modifier') {
       this.buildJson();
-      this.managementService.updateAccident(this.accident, this.id);
+      //this.managementService.updateAccident(this.accident, this.id);
     } else {
       console.log('error: invalid action');
     }
+    this.dialogRef.close('applyAction');
   }
 
   annuler() {
     // Fermer le popup
-    console.log('annuler');
+    this.dialogRef.close('Annuler');
   }
 
 }

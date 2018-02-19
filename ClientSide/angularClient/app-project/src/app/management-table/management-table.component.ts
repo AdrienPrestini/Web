@@ -18,7 +18,7 @@ export class ManagementTableComponent implements OnInit {
 
   fillTable() {
     console.log('tamere');
-    ///console.log(str);
+    //  console.log(str);
     /*this.managementService.getAccidents().subscribe((res) => {
       console.log('xd');
       this.accidents = res;
