@@ -23,6 +23,9 @@
         Nombre véhicules
       </th>
       <th>
+        Commentaires
+      </th>
+      <th>
         Actions
       </th>
     </tr>
@@ -34,6 +37,7 @@
       <td>{{ x.properties.adr }}</td>
       <td>{{ x.properties.code_postal }}</td>
       <td>{{ x.properties.nbv }}</td>
+      <td><span *ngIf="x.comments">{{ x.comments.length }}</span><span *ngIf="!x.comments">0</span></td>
       <td>
         <span class="glyphicon glyphicon-edit" (click)="edit(i)"></span>
         <span style="display:inline-block; width: 10px;"></span>
