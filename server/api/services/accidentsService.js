@@ -322,6 +322,7 @@ function formatAccidentModel(infos){
     accident.properties.code_postal = infos.code_postal;
     accident.properties.coord = [parseFloat(infos.lat), parseFloat(infos.long)];
     accident.comments = infos.comments;
+    accident.properties.hrmm = infos.hrmm;
     return accident;
 }
 
