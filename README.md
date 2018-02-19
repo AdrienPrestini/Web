@@ -20,7 +20,7 @@ Pour installer l'application cliente, il suffit d'utiliser la commande
 ```
   $ npm install
   ```
-Ceci va installer tous les modules et dépendances nécessaires pour la partie **Client/Client** et **Client/Management**. Cette partie utilise de nombreux modules dont un important, AGM ([Angular Google Maps](https://angular-maps.com/guides/getting-started/)) qui permet d'exploiter la cartographie de Google Maps pour Angular. Nous utilisons également Bootstrap et [Google Material Angular](https://material.angular.io/) pour la gestion de popup et de gestion des panneaux d'affichage.
+Ceci va installer tous les modules et dépendances nécessaires pour la partie **Client/Client** et **Client/Management**. Cette partie utilise de nombreux modules dont un important, AGM ([Angular Google Maps](https://angular-maps.com/guides/getting-started/)) qui permet d'exploiter la cartographie de Google Maps pour Angular. Nous utilisons également [Bootstrap](https://getbootstrap.com/) et [Google Material Angular](https://material.angular.io/) pour la gestion de popup et de gestion des panneaux d'affichage.
 Pour lancer l'application côté cliente : 
 ```
 $ ng serve
