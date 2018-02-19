@@ -18,12 +18,11 @@ export class ManagementTableComponent implements OnInit {
 
   fillTable() {
     console.log('tamere');
-    //  console.log(str);
-    /*this.managementService.getAccidents().subscribe((res) => {
+    this.managementService.getAccidents().subscribe((res) => {
       console.log('xd');
       this.accidents = res;
-    });*/
-    this.accidents = [{
+    });
+    /*this.accidents = [{
       "_id": "5a78a49ee9eaca2f596686a6",
       "type": "Feature",
       "geometry": {
@@ -91,7 +90,7 @@ export class ManagementTableComponent implements OnInit {
         }
       ]
     }];
-    console.log('lapute');
+    console.log('lapute');*/
   }
 
   edit(index) {

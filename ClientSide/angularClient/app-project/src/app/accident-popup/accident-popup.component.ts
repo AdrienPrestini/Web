@@ -27,28 +27,24 @@ export class AccidentPopupComponent implements OnInit {
   constructor(private managementService: ManagementService, public dialogRef: MatDialogRef<AccidentPopupComponent>) { }
 
   ngOnInit() {
+    if (this.action == 'Ajouter') {
+      this.mode = 'Nouvel accident';
+    } else {
+      this.mode = 'Modifier accident';
+    }
   }
 
   buildJson() {
 
-    this.accident = {
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          this.latitude,
-          this.longitude
-        ]
-      }, "properties": {
-        "datetime": this.date,
-        "nbv": this.nbv,
-        "adr": this.adresse,
-        "code_postal": this.postal,
-        "coordonnees": [
-          this.longitude,
-          this.latitude
-        ]
+    if (this.action == 'Ajouter') {
+      this.accident = {
+        long: this.longitude, lat: this.latitude, datetime: this.date, nbv: this.nbv,
+        adr: this.adresse, code_postal: this.postal, comments: []
       }
-    };
+    } else {
+
+    }
+
     console.log(this.accident);
   }
 
@@ -56,7 +52,9 @@ export class AccidentPopupComponent implements OnInit {
     console.log(this.action);
     if (this.action == 'Ajouter') {
       this.buildJson();
-      //this.managementService.addAccident(this.accident);
+      this.managementService.addAccident(this.accident).subscribe((res) => {
+        console.log('Posting accident');
+      });
     } else if (this.action == 'Modifier') {
       this.buildJson();
       //this.managementService.updateAccident(this.accident, this.id);
