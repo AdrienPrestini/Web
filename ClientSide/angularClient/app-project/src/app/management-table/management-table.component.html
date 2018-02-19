@@ -14,13 +14,19 @@
         Date
       </th>
       <th>
+        Heure
+      </th>
+      <th>
         Adresse
       </th>
       <th>
         Code Postal
       </th>
       <th>
-        Nombre véhicules
+        Véhicules
+      </th>
+      <th>
+        Lieu
       </th>
       <th>
         Commentaires
@@ -34,9 +40,11 @@
       <td>{{ x.geometry.coordinates[0] }}</td>
       <td>{{ x.geometry.coordinates[1] }}</td>
       <td>{{ x.properties.datetime }}</td>
+      <td>{{ x.properties.hrmn }}</td>
       <td>{{ x.properties.adr }}</td>
       <td>{{ x.properties.code_postal }}</td>
       <td>{{ x.properties.nbv }}</td>
+      <td>{{ x.properties.agg }}</td>
       <td><span *ngIf="x.comments">{{ x.comments.length }}</span><span *ngIf="!x.comments">0</span></td>
       <td>
         <span class="glyphicon glyphicon-edit" (click)="edit(i)"></span>

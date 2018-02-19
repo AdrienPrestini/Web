@@ -24,6 +24,9 @@ export class ManagementTableComponent implements OnInit {
     console.log('tamere');
     this.managementService.getAccidents().subscribe((res) => {
       console.log('xd');
+      for (var i = 0; i < res.length; i++) {
+        res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
+      }
       this.accidents = res;
     });
   }
