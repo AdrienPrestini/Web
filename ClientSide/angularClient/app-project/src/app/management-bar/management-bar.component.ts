@@ -1,23 +1,32 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ManagementTableComponent } from '../management-table/management-table.component';
 import { ManagementService } from '../services/management.service';
+import { AccidentPopupComponent } from '../accident-popup/accident-popup.component';
+
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-management-bar',
   templateUrl: './management-bar.component.html',
   styleUrls: ['./management-bar.component.css'],
-  providers: [ManagementService]
+  providers: [ManagementService],
+  entryComponents: [AccidentPopupComponent]
 })
 export class ManagementBarComponent implements OnInit {
 
-  @Inject(ManagementTableComponent) managementTable: ManagementTableComponent;
-
-  constructor(private managementService: ManagementService) {
-    this.managementTable = new ManagementTableComponent(managementService)
+  constructor(public popup: MatDialog, private managementService: ManagementService) {
   }
 
   ngOnInit() {
-    this.managementTable.filTable();
+    
   }
 
+  ajouterButton() {
+    console.log('lol');
+    let dialogRef = this.popup.open(AccidentPopupComponent, {
+      data: {
+        
+      }
+    });
+  }
 }
