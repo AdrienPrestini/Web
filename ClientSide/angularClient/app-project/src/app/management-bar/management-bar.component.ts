@@ -22,10 +22,9 @@ export class ManagementBarComponent implements OnInit {
   }
 
   ajouterButton() {
-    console.log('lol');
     let dialogRef = this.popup.open(AccidentPopupComponent, {
       data: {
-        
+        action:'Ajouter'
       }
     });
   }

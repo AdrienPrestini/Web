@@ -1,7 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { ManagementService } from '../services/management.service';
-
-import { MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-accident-popup',
@@ -16,6 +15,7 @@ export class AccidentPopupComponent implements OnInit {
 
   accident = {};
   id = "0";
+  comments = [];
 
   @Input() longitude: number;
   @Input() latitude: number;
@@ -24,31 +24,48 @@ export class AccidentPopupComponent implements OnInit {
   @Input() date: Date;
   @Input() nbv: number;
 
-  constructor(private managementService: ManagementService, public dialogRef: MatDialogRef<AccidentPopupComponent>) { }
+  constructor( @Inject(MAT_DIALOG_DATA) public data: any, private managementService: ManagementService, public dialogRef: MatDialogRef<AccidentPopupComponent>) {
+    this.action = data.action;
+    if (this.action == 'Ajouter') {
+      this.mode = 'Nouvel accident';
+    } else {
+      this.mode = 'Modifier accident';
+      this.accident = data.accident;
+    }
+  }
 
   ngOnInit() {
+    if (this.action == 'Modifier') {
+      this.longitude = this.accident.geometry.coordinates[0];
+      this.latitude = this.accident.geometry.coordinates[1];
+      this.date = this.accident.properties.datetime;
+      this.adresse = this.accident.properties.adr;
+      this.postal = this.accident.properties.code_postal;
+      this.nbv = this.accident.properties.nbv;
+
+      this.id = this.accident._id;
+      this.comments = this.accident.comments.slice();
+    }
   }
 
   buildJson() {
 
-    this.accident = {
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          this.latitude,
-          this.longitude
-        ]
-      }, "properties": {
-        "datetime": this.date,
-        "nbv": this.nbv,
-        "adr": this.adresse,
-        "code_postal": this.postal,
-        "coordonnees": [
-          this.longitude,
-          this.latitude
-        ]
+    if (this.action == 'Ajouter') {
+      this.accident = {
+        long: this.longitude, lat: this.latitude, datetime: this.date, nbv: this.nbv,
+        adr: this.adresse, code_postal: this.postal, comments: []
       }
-    };
+    } else {
+      delete this.accident._id;
+      this.accident.comments = this.comments;
+      this.accident.geometry.coordinates[0] = this.longitude;
+      this.accident.geometry.coordinates[1] = this.latitude;
+      this.accident.properties.datetime = this.date;
+      this.accident.properties.adr = this.adresse;
+      this.accident.properties.code_postal = this.postal
+      this.accident.properties.nbv = this.nbv;
+    }
+
     console.log(this.accident);
   }
 
@@ -56,10 +73,15 @@ export class AccidentPopupComponent implements OnInit {
     console.log(this.action);
     if (this.action == 'Ajouter') {
       this.buildJson();
-      //this.managementService.addAccident(this.accident);
+      this.managementService.addAccident(this.accident).subscribe((res) => {
+        console.log('Posting accident');
+      });
     } else if (this.action == 'Modifier') {
       this.buildJson();
-      //this.managementService.updateAccident(this.accident, this.id);
+      this.managementService.updateAccident(this.accident, this.id).subscribe((res) => {
+        console.log('Puting accident');
+      });
+      this.accident._id = this.id;
     } else {
       console.log('error: invalid action');
     }
@@ -71,4 +93,8 @@ export class AccidentPopupComponent implements OnInit {
     this.dialogRef.close('Annuler');
   }
 
+  remove(index) {
+    console.log('remove ' + index);
+    this.comments.splice(index, 1);
+  }
 }

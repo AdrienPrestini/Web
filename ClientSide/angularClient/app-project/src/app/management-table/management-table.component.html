@@ -23,17 +23,21 @@
         Nombre véhicules
       </th>
       <th>
+        Commentaires
+      </th>
+      <th>
         Actions
       </th>
     </tr>
     <tr *ngFor="let x of accidents; let i = index">
       <td>{{ x._id }}</td>
       <td>{{ x.geometry.coordinates[0] }}</td>
-      <td>{{ x.geometry.coordinates[0] }}</td>
+      <td>{{ x.geometry.coordinates[1] }}</td>
       <td>{{ x.properties.datetime }}</td>
       <td>{{ x.properties.adr }}</td>
       <td>{{ x.properties.code_postal }}</td>
       <td>{{ x.properties.nbv }}</td>
+      <td><span *ngIf="x.comments">{{ x.comments.length }}</span><span *ngIf="!x.comments">0</span></td>
       <td>
         <span class="glyphicon glyphicon-edit" (click)="edit(i)"></span>
         <span style="display:inline-block; width: 10px;"></span>

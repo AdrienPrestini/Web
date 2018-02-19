@@ -1,37 +1,55 @@
 <div class="panel panel-default text-center">
   <div class="panel-heading">
-    {{mode}}
+    <h3>{{mode}}</h3>
   </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-0"></div>
       <div class="col-xs-6">
-        Longitude <input type="text" id="longitude" class="form-control" [(ngModel)]="longitude" />
+        Longitude <input type="text" class="form-control" [(ngModel)]="longitude" />
       </div>
       <div class="col-xs-6">
-        Latitude <input type="text" id="latitude" class="form-control" [(ngModel)]="latitude" />
+        Latitude <input type="text" class="form-control" [(ngModel)]="latitude" />
       </div>
       <div class="col-xs-0"></div>
     </div>
     <div class="row">
       <div class="col-xs-0"></div>
       <div class="col-xs-6">
-        Code Postal <input type="text" id="postal" class="form-control" [(ngModel)]="postal"/>
+        Code Postal <input type="text" class="form-control" [(ngModel)]="postal" />
       </div>
       <div class="col-xs-6">
-        Adresse <input type="text" id="adresse" class="form-control" [(ngModel)]="adresse"/>
+        Adresse <input type="text" class="form-control" [(ngModel)]="adresse" />
       </div>
       <div class="col-xs-0"></div>
     </div>
     <div class="row">
       <div class="col-xs-0"></div>
       <div class="col-xs-6">
-        Date <input type="date" id="date" class="form-control" [(ngModel)]="date"/>
+        Date <input type="date" class="form-control" [(ngModel)]="date" />
       </div>
       <div class="col-xs-6">
-        Nombre de véhicule <input type="text" id="nbaccidente" class="form-control" [(ngModel)]="nbv"/>
+        Nombre de véhicule <input type="text" class="form-control" [(ngModel)]="nbv" />
       </div>
       <div class="col-xs-0"></div>
+    </div>
+    <br />
+    <div class="panel panel-default text-center">
+      <div class="panel-heading">
+        <h4>Commentaires</h4>
+      </div>
+      <div class="panel-body">
+        <div *ngFor="let x of comments; let i = index" class="panel panel-default">
+          <div class="row">
+            <div class="col-xs-10">
+              {{x.text}}
+            </div>
+            <div class="col-xs-2">
+              <span class="glyphicon glyphicon-remove" (click)="remove(i)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="panel-footer">
