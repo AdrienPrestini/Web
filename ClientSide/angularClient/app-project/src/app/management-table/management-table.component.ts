@@ -16,13 +16,14 @@ export class ManagementTableComponent implements OnInit {
 
   }
 
-  filTable() {
+  fillTable() {
     console.log('tamere');
+    ///console.log(str);
     /*this.managementService.getAccidents().subscribe((res) => {
       console.log('xd');
       this.accidents = res;
     });*/
-    this.accidents = {
+    this.accidents = [{
       "_id": "5a78a49ee9eaca2f596686a6",
       "type": "Feature",
       "geometry": {
@@ -89,7 +90,8 @@ export class ManagementTableComponent implements OnInit {
           "rate": 5
         }
       ]
-    };
+    }];
+    console.log('lapute');
   }
 
   edit(index) {

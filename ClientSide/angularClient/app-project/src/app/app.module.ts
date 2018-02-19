@@ -30,7 +30,7 @@ import { AccidentPopupComponent } from './accident-popup/accident-popup.componen
 
 const appRoutes: Routes = [
   { path: 'client', component: ClientComponent },
-  { path: 'management', component: AccidentPopupComponent },
+  { path: 'management', component: ManagementBarComponent },
   {
     path: '',
     redirectTo: '/client',

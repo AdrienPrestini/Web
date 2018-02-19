@@ -10,18 +10,11 @@ import { ManagementService } from '../services/management.service';
 })
 export class ManagementBarComponent implements OnInit {
 
-  @Input() managementTable: ManagementTableComponent;
-
   constructor(private managementService: ManagementService) {
-    this.managementTable = new ManagementTableComponent(managementService)
   }
 
   ngOnInit() {
     
-  }
-
-  rechercherButton() {
-    this.managementTable.filTable();
   }
 
   ajouterButton() {

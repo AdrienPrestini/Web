@@ -11,16 +11,16 @@
         <h2>Filtrer</h2>
       </div>
       <div class="col-xs-6">
-        <button class="btn btn-default" type="button" (click)="rechercherButton()">Rechercher</button>
+        <button class="btn btn-default" type="button" (click)="managementTable.fillTable()">Rechercher</button>
         <button class="btn btn-default" type="button" (click)="ajouterButton()">Ajouter nouvelle accident</button>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-2">
-        Code Postal <input type="text" class="form-control" />
+        Code Postal <input type="text" class="form-control" [(ngModel)]="postal"/>
       </div>
       <div class="col-xs-2">
-        Date <input type="date" class="form-control" />
+        Date <input type="date" class="form-control" [(ngModel)]="date"/>
       </div>
     </div>
   </div>
