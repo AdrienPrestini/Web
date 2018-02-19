@@ -59,7 +59,6 @@ const appRoutes: Routes = [
     ManagementMapComponent,
     ManagementComponent,
     AccidentPopupComponent,
-    ManagementMapComponent,
     AccidentCommentComponent,
     AlertComponent
   ],
@@ -75,7 +74,7 @@ const appRoutes: Routes = [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyC4X1tSatj9uOJbHGmbpB0Q916JMuTFV1I',
       libraries: ['places', 'geometry'],
-    
+      
     }),
     AgmDirectionModule,
     CollapseModule,
