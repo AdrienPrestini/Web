@@ -1,10 +1,11 @@
 delete process.env.GOOGLE_API_KEY;
 require('dotenv').config();
+process.env.DB_NAME = 'accidents';
 var cors = require('cors')
 
 var express = require('express');
 var app = express();
-app.use(cors())
+app.use(cors());
 var bodyParser = require('body-parser');
 
 port = process.env.PORT || 3000;
@@ -17,3 +18,5 @@ routes(app);
 
 app.listen(port);
 console.log("Server started on port "+port);
+
+module.exports = app;

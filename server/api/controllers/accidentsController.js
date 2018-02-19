@@ -33,7 +33,7 @@ router.delete('/:_idaccident/comment/:_idcomment', deleteComment); //DELETE COMM
 module.exports = router;
 
 function accidentsInRadius(req, res) {
-    console.log('IN RADIUS');
+    console.log('Accident in Radius');
     accidentService.getAccidentInRadius(req.params.lat_center, req.params.lng_center, req.params.radius)
     .then((result) => {
         res.send(result);
@@ -44,6 +44,7 @@ function accidentsInRadius(req, res) {
 }
 
 function accidentsInPolygon(req, res) {
+    console.log('Accident in Polygon');
     accidentService.getAccidentInPolygon(req.query.lat_center, req.query.lng_center, req.query.distance)
     .then((result) => {
         res.send(result);
@@ -54,6 +55,7 @@ function accidentsInPolygon(req, res) {
 }
 
 function accidentsOnItinerary(req, res) {
+    console.log('Accident on itinerary');
     accidentService.getAccidentsOnItinerary(req.query.latstart, req.query.lngstart, req.query.latend, req.query.lngend)
     .then((result) => {
         res.send(result);
@@ -64,7 +66,7 @@ function accidentsOnItinerary(req, res) {
 }
 
 function accidentById(req, res){
-    console.log("TRETETE");
+    console.log("Accident by ID");
     accidentService.getAccidentById(req.params._id)
     .then((result) => {
         res.send(result);
@@ -76,6 +78,7 @@ function accidentById(req, res){
 }
 
 function accidentInRegion(req, res) {
+    console.log("Accident in Region");
     accidentService.accidentInRegion(req.params._idReg).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -84,6 +87,7 @@ function accidentInRegion(req, res) {
 }
 
 function accidentInDepartement(req, res) {
+    console.log("Accident in Departement");
     accidentService.accidentInDepartement(req.params._idDep).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -92,6 +96,7 @@ function accidentInDepartement(req, res) {
 }
 
 function accidentInCommune(req, res) {
+    console.log("Accident in Commune");
     accidentService.accidentInCommune(req.params._idCom).then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -124,6 +129,7 @@ function deleteComment(req, res) {
 }
 
 function list_all_accidents(req, res) {
+    console.log("Get all accident");
     accidentService.getAllAccidents().then((result) => {
         res.send(result);
     }).catch((error) => {
@@ -141,6 +147,7 @@ Le body de la requête doit avoir les informations suivantes :
 }
  */
 function newAccident(req, res){
+    console.log("Add accident");
     accidentService.newAccident(req.body).then((result) => {
         res.send(result);
     })
@@ -160,6 +167,7 @@ Le body de la requête doit avoir les informations suivantes :
 }
  */
 function updateAccident(req, res){
+    console.log("Update Accident");
     accidentService.updateAccident(req.params._id, req.body).then((result) => {
         res.send(result);
     })

@@ -5,10 +5,10 @@ var accents = require('remove-accents');
 var assert = require('assert');
 var util = require('util');
 var fetch = require('node-fetch');
-
+var config = require('config');
 const url = 'mongodb://localhost:27017';
 // Database Name
-const dbName = 'accidents';
+const dbName = config.DBName;
 // This file's collection
 
 var db;
