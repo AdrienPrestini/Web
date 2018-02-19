@@ -29,12 +29,12 @@ describe('Books', () => {
                     res.should.have.status(200);
                     res.body.length.should.be.eql(1);
                     chai.request(server)
-                        .get('/accidents/departement/'+res.body[0]._id)
-                        .end((err, res) => {
-                            res.should.have.status(200);
-                            res.body.length.should.be.eql(5);
-                            done();
-                        });
+                    .get('/accidents/departement/'+res.body[0]._id)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.length.should.be.eql(5);
+                        done();
+                    });
                 });
             //GET
         });
@@ -54,19 +54,76 @@ describe('Books', () => {
                 hrmm: "09:45"
             })
             .end((err, res) => {
-                console.log(res.body);
+                res.should.have.status(200);
+                //console.log(res.body);
                 done();
             }); 
         });
 
         it('it should update an accident', (done) => {
             //PUT
-            done();
+            chai.request(server)
+            .put('/accidents/5a78a49ee9eaca2f596687e4')
+            .send({
+                datetime: "2015-09-16T09:45:00+02:00",
+                lat: 43.705377028411945,
+                long: 7.195670121876096,
+                code_postal: "06410",
+                comments: [],
+                adr: "06 rue du 06",
+                nbv: 7,
+                hrmm: "09:45"
+            })
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.ok.should.be.eql(1);
+                res.body.nModified.should.be.eql(1);
+                done();
+            });
         });
 
         it('it should delete an accident', (done) => {
             //DELETE
-            done();
+            chai.request(server)
+            .post('/accidents')
+            .send({
+                datetime: "2015-09-16T09:45:00+02:00",
+                lat: 43.705377028411945,
+                long: 7.195670121876096,
+                code_postal: "06410",
+                comments: [],
+                adr: "06 rue du 06",
+                nbv: 6,
+                hrmm: "09:45"
+            })
+            .end((err, res) => {
+                res.should.have.status(200);
+
+                chai.request(server)
+                .delete('/accidents/'+res.body)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.ok.should.be.eql(1);
+                    done();
+                });
+            }); 
+        });
+
+        after(()=> {
+            chai.request(server)
+            .put('/accidents/5a78a49ee9eaca2f596687e4')
+            .send({
+                datetime: "2015-09-16T09:45:00+02:00",
+                lat: 43.705377028411945,
+                long: 7.195670121876096,
+                code_postal: "06410",
+                comments: [],
+                adr: "06 rue du 06",
+                nbv: 6,
+                hrmm: "09:45"
+            })
+            .end((err, res) => {
+            });
         });
     });
 });
