@@ -35,7 +35,6 @@ MongoClient.connect(url, function(err, client) {
     db = client.db(dbName);
     accidents = db.collection(collectionName);
     console.log("Connexion à la collection ", collectionName);
-    module.exports.test = accidents;
 });
 
 var service = {};
@@ -57,9 +56,51 @@ service.accidentInCommune = getAccidentsInCommune;
 
 module.exports = service;
 
-function getAllAccidents() {
+function constructFilters(params) {
+    var filters = {};
+    if(params.date_deb || params.date_fin) {
+        if(!params.date_deb) {
+            filters['properties.datetime'] = {
+                "$lt": new Date(params.date_fin)
+            }
+        } else if(!params.date_fin) {
+            filters['properties.datetime'] = {
+                "$gte": new Date(params.date_deb)
+            }
+        } else {
+            filters['properties.datetime'] = {
+                "$gte": new Date(params.date_deb),
+                "$lt": new Date(params.date_fin)
+            }
+        }
+    }
+    if(params.heure_deb || params.heure_fin) {
+        if(!params.heure_deb) {
+            filters['properties.hrmn'] = {
+                "$lt": params.heure_fin
+            }
+        } else if(!params.heure_fin) {
+            filters['properties.hrmn'] = {
+                "$gte": params.heure_deb
+            }
+        } else {
+            filters['properties.hrmn'] = {
+                "$gte": params.heure_deb,
+                "$lt": params.heure_fin
+            }
+        }
+    }
+    if(params.code_postal) {
+        filters['properties.code_postal'] = {
+            "$eq": params.code_postal
+        }
+    }
+    return filters;
+}
+
+function getAllAccidents(params) {
     return new Promise((resolve, reject) => {
-        accidents.find({}).toArray(function(err, docs) {
+        accidents.find(constructFilters(params)).toArray(function(err, docs) {
             if(err)
                 reject(err);
             resolve(docs);
@@ -322,7 +363,7 @@ function formatAccidentModel(infos){
     accident.properties.code_postal = infos.code_postal;
     accident.properties.coord = [parseFloat(infos.lat), parseFloat(infos.long)];
     accident.comments = infos.comments;
-    accident.properties.hrmm = infos.hrmm;
+    accident.properties.hrmn = infos.hrmn;
     return accident;
 }
 

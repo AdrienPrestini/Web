@@ -130,7 +130,7 @@ function deleteComment(req, res) {
 
 function list_all_accidents(req, res) {
     console.log("Get all accident");
-    accidentService.getAllAccidents().then((result) => {
+    accidentService.getAllAccidents(req.query).then((result) => {
         res.send(result);
     }).catch((error) => {
         res.status(400).send(error);
