@@ -16,6 +16,8 @@ import { ClientComponent } from './client/client.component';
 import { HttpModule } from '@angular/http';
 //import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { LoaderService } from './loader.service';
+import { AlertService } from './alert.service';
+import { LoaderCommentsService } from './loader-comments.service';
 import { DialogAccidentComponent} from './dialog-accident/dialog-accident.component';
 import { MatDialogModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,7 +27,9 @@ import { ManagementTableComponent } from './management-table/management-table.co
 import { ManagementMapComponent } from './management-map/management-map.component';
 import { ManagementComponent } from './management/management.component';
 import { AccidentPopupComponent } from './accident-popup/accident-popup.component';
-
+import { AccidentCommentComponent } from './accident-comment/accident-comment.component';
+import {MatInputModule} from '@angular/material/input';
+import { AlertComponent } from './alert/alert.component';
 
 
 const appRoutes: Routes = [
@@ -55,6 +59,9 @@ const appRoutes: Routes = [
     ManagementMapComponent,
     ManagementComponent,
     AccidentPopupComponent
+    ManagementMapComponent,
+    AccidentCommentComponent,
+    AlertComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -74,11 +81,12 @@ const appRoutes: Routes = [
     CollapseModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatInputModule
     //AgmJsMarkerClustererModule
   ],
-  providers: [LoaderService],
+  providers: [LoaderService, LoaderCommentsService, AlertService],
   bootstrap: [AppComponent],
-  entryComponents: [DialogAccidentComponent]
+  entryComponents: [DialogAccidentComponent, AccidentCommentComponent]
 })
 export class AppModule { }

@@ -9,13 +9,16 @@
 
   </div>
 </nav>
-
 <div class="row custom">
   <!--The content below is only a placeholder and can be replaced.-->
   <agm-map style="z-index:4" [latitude]="lat" [longitude]="lng" [zoom]="15">
     <agm-direction *ngIf="dir" [origin]="dir.origin" [destination]="dir.destination"></agm-direction>
 
-    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    <agm-marker [latitude]="lat" *ngFor="let t of markers;" [longitude]="lng">
+        <agm-info-window>
+            <strong>{{t.etat}}</strong>
+        </agm-info-window>
+    </agm-marker>
     <agm-marker *ngFor="let m of markersAccidents;"
                 [latitude]="m.lat"
                 [longitude]="m.lng"
@@ -23,7 +26,7 @@
                 [label]="m.label">
                 <agm-info-window>
                   <strong>{{m.etat}}</strong>
-                  <button class="btn-outline-success" (click)="clickedMarker(m.id)">Détails</button>
+                  <button class="btn-outline-success form-control col-lg-4 text-center"  (click)="clickedMarker(m.id)">Détails</button>
                 </agm-info-window>
     </agm-marker>
   </agm-map>

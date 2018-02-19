@@ -1,0 +1,25 @@
+<h2 style="text-align: center;" >Commentaires sur cet accident</h2>
+
+<ng-container *ngIf="!isNotEmpty">
+    <div >
+      <p>Aucun commentaire</p>
+    </div>
+  </ng-container>
+<ng-container *ngIf="isNotEmpty">
+  <div *ngFor="let comment of comments, let i = index">
+    <p>Commentaire : {{comment.text}}</p>
+  </div>
+</ng-container>
+
+<div style="text-align: center;">
+  <h3 >Ajouter un commentaire</h3>
+  <textarea style="resize: none;" [(ngModel)]="commentaire" class="form-control" rows="2" ></textarea>
+</div>
+
+<div class="container" style="Width:100%; text-align:center;">
+  <div class="row"> 
+    <button style="margin-top: 15px;" mat-raised-button class="btn-outline-danger form-control col-lg-6 " type="button" (click)="dialogRef.close();">Fermer</button>
+    <button style="margin-top: 15px;" mat-raised-button class="btn-outline-success form-control col-lg-6 " type="button" (click)="submitComment();">Valider</button>
+  </div>
+</div>
+<ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
