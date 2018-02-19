@@ -15,6 +15,7 @@ export class AccidentPopupComponent implements OnInit {
 
   accident = {};
   id = "0";
+  comments = [];
 
   @Input() longitude: number;
   @Input() latitude: number;
@@ -43,6 +44,7 @@ export class AccidentPopupComponent implements OnInit {
       this.nbv = this.accident.properties.nbv;
 
       this.id = this.accident._id;
+      this.comments = this.accident.comments.slice();
     }
   }
 
@@ -55,6 +57,7 @@ export class AccidentPopupComponent implements OnInit {
       }
     } else {
       delete this.accident._id;
+      this.accident.comments = this.comments;
       this.accident.geometry.coordinates[0] = this.longitude;
       this.accident.geometry.coordinates[1] = this.latitude;
       this.accident.properties.datetime = this.date;
@@ -90,4 +93,8 @@ export class AccidentPopupComponent implements OnInit {
     this.dialogRef.close('Annuler');
   }
 
+  remove(index) {
+    console.log('remove ' + index);
+    this.comments.splice(index, 1);
+  }
 }
