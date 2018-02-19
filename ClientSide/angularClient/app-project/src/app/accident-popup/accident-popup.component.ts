@@ -22,6 +22,8 @@ export class AccidentPopupComponent implements OnInit {
   @Input() postal: string;
   @Input() adresse: string;
   @Input() date: Date;
+  @Input() heure: string;
+  @Input() lieu: string;
   @Input() nbv: number;
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, private managementService: ManagementService, public dialogRef: MatDialogRef<AccidentPopupComponent>) {
@@ -42,6 +44,8 @@ export class AccidentPopupComponent implements OnInit {
       this.adresse = this.accident.properties.adr;
       this.postal = this.accident.properties.code_postal;
       this.nbv = this.accident.properties.nbv;
+      this.lieu = this.accident.properties.agg;
+      this.heure = this.accident.properties.hrmn;
 
       this.id = this.accident._id;
       this.comments = this.accident.comments.slice();
@@ -64,6 +68,8 @@ export class AccidentPopupComponent implements OnInit {
       this.accident.properties.adr = this.adresse;
       this.accident.properties.code_postal = this.postal
       this.accident.properties.nbv = this.nbv;
+      this.accident.properties.agg = this.lieu;
+      this.accident.properties.hrmn = this.heure;
     }
 
     console.log(this.accident);
