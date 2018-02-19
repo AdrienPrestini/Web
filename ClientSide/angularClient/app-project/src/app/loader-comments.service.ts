@@ -8,7 +8,7 @@ export class LoaderCommentsService {
 
   constructor(private http:Http) { }
 
-  private url = "http://localhost:3000/accidents/";
+  private url = "http://10.212.110.200:3000/accidents/";
 //accidents?latstart=43.692887&lngstart=7.249432&latend=45.162432&lngend=5.715637
 
   getAccidentById(id){
