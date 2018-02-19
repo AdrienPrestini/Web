@@ -5,6 +5,7 @@ var ObjectId = require('mongodb').ObjectID;
 var assert = require('assert');
 var util = require('util');
 var fetch = require('node-fetch');
+var config = require('config');
 
 var polygonTools = require('../../tools/polygon');
 var gpsPointsTools = require('../../tools/gpsPoints');
@@ -18,12 +19,15 @@ const uuidv4 = require('uuid/v4');
 
 const url = 'mongodb://localhost:27017';
 // Database Name
-const dbName = 'accidents';
+const dbName = config.DBName;
+//var
 // This file's collection
 const collectionName = 'Accidents';
 
 var db;
 var accidents;
+
+
 MongoClient.connect(url, function(err, client) {
     if(err)
         console.log("Connexion impossible à MongoDB. Collection : ", collectionName);
@@ -31,10 +35,10 @@ MongoClient.connect(url, function(err, client) {
     db = client.db(dbName);
     accidents = db.collection(collectionName);
     console.log("Connexion à la collection ", collectionName);
+    module.exports.test = accidents;
 });
 
 var service = {};
-
 service.getAllAccidents = getAllAccidents;
 service.getAccidentsOnItinerary = getAccidentsOnItinerary;
 service.getAccidentById = getAccidentById;
@@ -89,7 +93,6 @@ function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
             .then(res => res.json())
             .then(json => {
                 if(json.routes[0].legs == 'undefined'){
-                    console.log("OKOK");
                     resolve('{}');
                 } 
                 else {
@@ -117,8 +120,6 @@ function getAccidentsOnItinerary(lat_start, lng_start, lat_end, lng_end) {
                         if(err) {
                             var NEBounds = json.routes[0].bounds.northeast;
                             var SWBounds = json.routes[0].bounds.southwest;
-                            console.log(NEBounds);
-                            console.log(SWBounds);
                             accidents.find({
                                 geometry: { 
                                     $geoIntersects: {
@@ -223,7 +224,6 @@ function getAccidentsInRegion(idRegion) {
             }).toArray(function(err, docs) {
                 if(err)
                     reject(err);
-                console.log(docs.length);
                 resolve(docs);
             });
         }); 
@@ -243,7 +243,6 @@ function getAccidentsInDepartement(idDep) {
             }).toArray(function(err, docs) {
                 if(err)
                     reject(err);
-                console.log(docs.length);
                 resolve(docs);
             });
         });
@@ -263,7 +262,6 @@ function getAccidentsInCommune(idCom) {
             }).toArray(function(err, docs) {
                 if(err)
                     reject(err);
-                console.log(docs.length);
                 resolve(docs);
             });
         });   
@@ -316,13 +314,13 @@ function deleteComment(idaccident, idcomment) {
 function formatAccidentModel(infos){
     var accident = {geometry:{}, properties:{}, comments: []};
     accident.geometry.type = "Point";
-    accident.geometry.coordinates = [infos.long, infos.lat];
+    accident.geometry.coordinates = [parseFloat(infos.long), parseFloat(infos.lat)];
 
     accident.properties.datetime = infos.datetime;
     accident.properties.adr = infos.adr;
-    accident.properties.nbv = infos.nbv;
+    accident.properties.nbv = parseInt(infos.nbv);
     accident.properties.code_postal = infos.code_postal;
-    accident.properties.coord = [infos.lat, infos.long];
+    accident.properties.coord = [parseFloat(infos.lat), parseFloat(infos.long)];
     accident.comments = infos.comments;
     return accident;
 }
@@ -341,10 +339,10 @@ function newAccident(infos){
 }
 
 function updateAccident(id, infos){
-    var accident = formatAccidentModel(infos);
+    //var accident = formatAccidentModel(infos);
 
     return new Promise((resolve, reject) => {
-        accidents.updateOne({ _id: new ObjectId(id) }, { $set: accident })
+        accidents.updateOne({ _id: new ObjectId(id) }, { $set: infos })
         .then((r) => {
             resolve(r);
         }).catch((error) => {
