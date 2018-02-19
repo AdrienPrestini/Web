@@ -13,6 +13,17 @@ Ce projet est découpé en deux parties : un côté serveur qui s'occupe de l'ad
 Le côté client s'occupe d'afficher les résultats de la base de données, la géolocalisation de l'utilisateur et les zones d'accidents potentielles sous différentes formes (textuels ou sur une carte).
 Le côté client se distingue en deux parties : une partie cliente (client) qui permet de visualiser les accidents autour de l'utilisateur et de voir ceux qui sont sur notre trajet. Une partie de gestion (management) permet de contrôler les données de l'application. Dans cette deuxième partie, un manager peut ajouter un accident sur une carte ou de façon textuelle, peut filtrer les accidents en fonction de la date et d'une zone géographique (par exemple, la région Provence-Alpes-Côte-D'Azur).
 
+## Technologies utilisées
+### Côté Serveur
+* **nodeJs** v8.9.4
+* **Mongo** v3.6.2
+* **GeoJSON** (format de JSON pour la géolocalisation)
+
+### Côté Client
+* **Angular CLI** v1.6.7
+* **Node** v6.11.4
+* **npm** v5.6.0
+
 ## Installation
 
 ### Côté Client
