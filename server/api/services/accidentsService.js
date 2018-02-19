@@ -323,7 +323,6 @@ function formatAccidentModel(infos){
     accident.properties.nbv = infos.nbv;
     accident.properties.code_postal = infos.code_postal;
     accident.properties.coord = [infos.lat, infos.long];
-    accident.properties.libellevoie = infos.libelle;
     return accident;
 }
 
