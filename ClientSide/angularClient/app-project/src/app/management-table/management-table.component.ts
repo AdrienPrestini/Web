@@ -20,10 +20,19 @@ export class ManagementTableComponent implements OnInit {
 
   }
 
-  fillTable() {
-    console.log('tamere');
-    this.managementService.getAccidents().subscribe((res) => {
-      console.log('xd');
+  fillTable(date_debut, date_fin, heure_debut, heure_fin, postal) {
+    console.log('Table filtre');
+    this.managementService.getAccidents(date_debut, date_fin, heure_debut, heure_fin, postal).subscribe((res) => {
+      for (var i = 0; i < res.length; i++) {
+        res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
+      }
+      this.accidents = res;
+    });
+  }
+
+  fillTableProxi(long, lat, distance) {
+    console.log('Table proximite');
+    this.managementService.getAccidentsProche(long, lat, distance).subscribe((res) => {
       for (var i = 0; i < res.length; i++) {
         res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
       }

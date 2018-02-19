@@ -14,11 +14,26 @@ import { MatDialog } from '@angular/material';
 })
 export class ManagementBarComponent implements OnInit {
 
+  lng;
+  lat;
+  distance = 2000;
+
+  postal;
+  date_debut;
+  date_fin;
+  heure_debut;
+  heure_fin;
+
   constructor(public popup: MatDialog, private managementService: ManagementService) {
   }
 
   ngOnInit() {
-    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.longitude;
+      });
+    }
   }
 
   ajouterButton() {
