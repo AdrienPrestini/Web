@@ -363,7 +363,9 @@ function formatAccidentModel(infos){
     accident.properties.code_postal = infos.code_postal;
     accident.properties.coord = [parseFloat(infos.lat), parseFloat(infos.long)];
     accident.comments = infos.comments;
+    accident.properties.agg = infos.agg;
     accident.properties.hrmn = infos.hrmn;
+    console.log(accident);
     return accident;
 }
 
@@ -382,7 +384,11 @@ function newAccident(infos){
 
 function updateAccident(id, infos){
     //var accident = formatAccidentModel(infos);
-
+    infos.geometry.coordinates[0] = parseFloat(infos.geometry.coordinates[0]);
+    infos.geometry.coordinates[1] = parseFloat(infos.geometry.coordinates[1]);
+    infos.properties.coord[0] = parseFloat(infos.properties.coord[0]);
+    infos.properties.coord[1] = parseFloat(infos.properties.coord[1]);
+    infos.properties.nbv = parseInt(infos.properties.nbv);
     return new Promise((resolve, reject) => {
         accidents.updateOne({ _id: new ObjectId(id) }, { $set: infos })
         .then((r) => {
