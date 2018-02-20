@@ -2,16 +2,22 @@
 <div class="">
   <div class="jumbotron">
     <div class="row">
-      <div class="col-xs-12">
-        <h1>Managelol</h1>
+      <div class="col-xs-8">
+        <h2>
+          Management des accidents
+        </h2>
+      </div>
+      <div class="col-xs-2" style="margin-top:20px">
+        <button class="btn col-xs-2 btn-block btn-default" type="button" (click)="tableau()" [ngClass]="{ 'btn-primary': mode == 'table' }">
+          Tableau
+        </button>
+      </div>
+      <div class="col-xs-2" style="margin-top:20px">
+        <button class="btn col-xs-2 btn-block btn-default" type="button" (click)="carte()" [ngClass]="{ 'btn-primary': mode == 'carte' }">
+          Carte
+        </button>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-6">
-        <h2>Filtrer</h2>
-      </div>
-    </div>
-
     <div class="row">
       <div class="col-xs-2">
         Date début
@@ -47,40 +53,31 @@
       </div>
       <div class="col-xs-2">
         <button class="btn btn-default" type="button"
-                (click)="managementTable.fillTable(date_debut,date_fin,heure_debut,heure_fin,postal)">
+                (click)="managementTable.fillTable(date_debut,date_fin,heure_debut,heure_fin,postal,mode);
+                managementMap.fillMap(date_debut,date_fin,heure_debut,heure_fin,postal,mode)">
           Filtrer
         </button>
       </div>
     </div>
 
     <div class="row">
-      <!--<div class="col-xs-2">
-        Longitude
-      </div>
-      <div class="col-xs-2">
-        Latitude
-      </div>-->
       <div class="col-xs-2">
         Rayon de recherche en mètres
       </div>
     </div>
     <div class="row">
-      <!--<div class="col-xs-2">
-        <input type="number" class="form-control" [(ngModel)]="lng" />
-      </div>
-      <div class="col-xs-2">
-        <input type="number" class="form-control" [(ngModel)]="lat" />
-      </div>-->
       <div class="col-xs-2">
         <input type="number" class="form-control" [(ngModel)]="distance" />
       </div>
       <div class="col-xs-4">
         <button class="btn btn-default" type="button"
-                (click)="managementTable.fillTableProxi(lng,lat,distance)">
+                (click)="managementTable.fillTableProxi(lng,lat,distance,mode);
+                managementMap.fillMapProxi(lng,lat,distance,mode)">
           Rechercher aux alentours
         </button>
       </div>
       <div class="col-xs-4">
+
       </div>
       <div class="col-xs-2">
         <button class="btn btn-primary" type="button" (click)="ajouterButton()">
@@ -90,5 +87,6 @@
     </div>
   </div>
 </div>
-<app-management-table #managementTable></app-management-table>
-<!--<app-accident-popup></app-accident-popup>-->
+<app-management-table [ngClass]="{ 'hideComponent': mode != 'table' }" #managementTable></app-management-table>
+<app-management-map [ngClass]="{ 'hideComponent': mode != 'carte' }" #managementMap></app-management-map>
+

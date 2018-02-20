@@ -1,13 +1,17 @@
 <div>
-  <agm-map [latitude]="latitudeCenter" [longitude]="longitudeCenter" [zoom]="15">
-    <!--<agm-marker *ngFor="let m of accidentsMarkers;"
+  <agm-map [latitude]="latitudeCenter" [longitude]="longitudeCenter"
+             (mapClick)="mapClicked($event)" [zoom]="15">
+    <agm-marker *ngFor="let m of accidentsMarkers; let i = index"
                 [latitude]="m.lat"
-                [longitude]="m.lng"
-                [markerDraggable]="m.draggable"
-                [label]="m.label">
+                [longitude]="m.lng">
                 <agm-info-window>
-                  <strong>{{m.etat}}</strong>
+                  <button class="btn btn-default" type="button" (click)="edit(i)">
+                    Modifier
+                  </button>
+                  <button class="btn btn-default" type="button" (click)="remove(i)">
+                    Supprimer
+                  </button>
                 </agm-info-window>
-    </agm-marker>-->
+    </agm-marker>
   </agm-map>
 </div>

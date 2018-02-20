@@ -14,30 +14,103 @@ import { MatDialog } from '@angular/material';
 export class ManagementTableComponent implements OnInit {
   accidents;
 
+  temp = [{
+    "_id": "5a78a49ee9eaca2f596686a6",
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        7.591112,
+        48.368193
+      ]
+    },
+    "properties": {
+      "int": "Intersection en T",
+      "nbv": 2,
+      "datetime": "2015-01-13T18:30:00+01:00",
+      "obsm": "Véhicule,Véhicule",
+      "situ": "Sur chaussée",
+      "pr": "0",
+      "adr": "Rue du Moulin",
+      "actp": "Se déplaçant,Se déplaçant,Se déplaçant",
+      "larrout": 60,
+      "lartpc": 0,
+      "nom_com": "Benfeld",
+      "circ": "Bidirectionnelle",
+      "catr": "Voie Communale",
+      "hrmn": "18:30",
+      "catu": "Conducteur,Passager,Conducteur",
+      "catv": "Bicyclette,VL seul",
+      "place": "1,2,1",
+      "lum": "Plein jour",
+      "gps": "Métropole",
+      "surf": "normale",
+      "mois": "01",
+      "sexe": "Féminin,Masculin,Masculin",
+      "voie": "1",
+      "an_nais": "1978,1996,1995",
+      "secu_utl": "Oui,Non,Non",
+      "num_acc": "201500006109",
+      "insee": "67028",
+      "pr1": 0,
+      "plan": "Partie rectiligne",
+      "jour": "13",
+      "an": "15",
+      "coordonnees": [
+        48.368193,
+        7.591112
+      ],
+      "trajet": "Domicile – travail,Promenade – loisirs",
+      "choc": "Avant gauche,Avant",
+      "code_postal": "67230",
+      "manv": "Tournant A gauche,Sans changement de direction",
+      "dep": "67",
+      "env1": "99",
+      "atm": "Normale",
+      "grav": "Indemne,Blessé,Blessé",
+      "agg": "En agglomération",
+      "num_veh": "B02,A01",
+      "secu": "Ceinture,Autre,Autre",
+      "com": "028",
+      "col": "Deux véhicules – par le coté"
+    },
+    "comments": [
+      {
+        "id": "d6856a61-39bb-4ed1-aa07-bc9174c8b427",
+        "text": "Très dangereux sur chaussée glissante",
+        "rate": 5
+      }
+    ]
+  }];
+
   constructor(public popup: MatDialog, private managementService: ManagementService) { }
 
   ngOnInit() {
 
   }
 
-  fillTable(date_debut, date_fin, heure_debut, heure_fin, postal) {
-    console.log('Table filtre');
-    this.managementService.getAccidents(date_debut, date_fin, heure_debut, heure_fin, postal).subscribe((res) => {
-      for (var i = 0; i < res.length; i++) {
-        res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
-      }
-      this.accidents = res;
-    });
+  fillTable(date_debut, date_fin, heure_debut, heure_fin, postal, mode) {
+    if (mode == 'table') {
+      console.log('Table filtre');
+      this.managementService.getAccidents(date_debut, date_fin, heure_debut, heure_fin, postal).subscribe((res) => {
+        for (var i = 0; i < res.length; i++) {
+          res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
+        }
+        this.accidents = res;
+      });
+    }
   }
 
-  fillTableProxi(long, lat, distance) {
-    console.log('Table proximite');
-    this.managementService.getAccidentsProche(long, lat, distance).subscribe((res) => {
-      for (var i = 0; i < res.length; i++) {
-        res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
-      }
-      this.accidents = res;
-    });
+  fillTableProxi(long, lat, distance, mode) {
+    if (mode == 'table') {
+      console.log('Table proximite');
+      this.managementService.getAccidentsProche(long, lat, distance).subscribe((res) => {
+        for (var i = 0; i < res.length; i++) {
+          res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
+        }
+        this.accidents = res;
+      });
+    }
   }
 
   edit(index) {
@@ -56,5 +129,11 @@ export class ManagementTableComponent implements OnInit {
 
     });
     this.accidents.splice(index, 1);
+  }
+
+  addAccident(id) {
+    this.managementService.getAccident(id).subscribe(result => {
+      this.accidents.push(result);
+    });
   }
 }

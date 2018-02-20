@@ -12,8 +12,16 @@ export class AccidentPopupComponent implements OnInit {
 
   mode: String = 'Nouvel accident'; //'Modifier l'accident'
   action: String = 'Ajouter'; //'Confirmer'
+  modifier = null;
 
-  accident = {};
+  accident;
+  /*
+    accident = {
+    _id: null, geometry: { coordinates: [] },
+    properties: { datetime: null, adr: null, code_postal: null, nbv:null, agg:null, hrmn: null},
+    comments: []
+  };
+  */
   id = "0";
   comments = [];
 
@@ -30,6 +38,11 @@ export class AccidentPopupComponent implements OnInit {
     this.action = data.action;
     if (this.action == 'Ajouter') {
       this.mode = 'Nouvel accident';
+      console.log(data);
+      if (data.lng && data.lat) {
+        this.longitude = data.lng;
+        this.latitude = data.lat;
+      }
     } else {
       this.mode = 'Modifier accident';
       this.accident = data.accident;
@@ -49,15 +62,17 @@ export class AccidentPopupComponent implements OnInit {
 
       this.id = this.accident._id;
       this.comments = this.accident.comments.slice();
+      this.modifier = true;
     }
   }
 
   buildJson() {
 
     if (this.action == 'Ajouter') {
+      this.accident = null;
       this.accident = {
         long: this.longitude, lat: this.latitude, datetime: this.date, nbv: this.nbv,
-        adr: this.adresse, code_postal: this.postal, comments: []
+        adr: this.adresse, code_postal: this.postal, hrmn: this.heure, agg:this.lieu, comments: []
       }
     } else {
       delete this.accident._id;
@@ -70,6 +85,7 @@ export class AccidentPopupComponent implements OnInit {
       this.accident.properties.nbv = this.nbv;
       this.accident.properties.agg = this.lieu;
       this.accident.properties.hrmn = this.heure;
+      this.accident.properties.coord = [this.latitude, this.longitude];
     }
 
     console.log(this.accident);
@@ -80,18 +96,20 @@ export class AccidentPopupComponent implements OnInit {
     if (this.action == 'Ajouter') {
       this.buildJson();
       this.managementService.addAccident(this.accident).subscribe((res) => {
-        console.log('Posting accident');
+        console.log('Posting accident: ' + res.text());
+        this.dialogRef.close(res.text());
       });
     } else if (this.action == 'Modifier') {
       this.buildJson();
       this.managementService.updateAccident(this.accident, this.id).subscribe((res) => {
         console.log('Puting accident');
+        this.dialogRef.close('applyAction');
       });
       this.accident._id = this.id;
     } else {
       console.log('error: invalid action');
+      this.dialogRef.close('close');
     }
-    this.dialogRef.close('applyAction');
   }
 
   annuler() {
@@ -102,5 +120,14 @@ export class AccidentPopupComponent implements OnInit {
   remove(index) {
     console.log('remove ' + index);
     this.comments.splice(index, 1);
+  }
+
+  supprimer() {
+    console.log('delete accident');
+    this.managementService.removeAccidents(this.id).subscribe((res) => {
+
+    });
+    this.accident = null;
+    this.dialogRef.close('Delete');
   }
 }

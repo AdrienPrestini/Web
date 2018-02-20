@@ -24,6 +24,8 @@ export class ManagementBarComponent implements OnInit {
   heure_debut;
   heure_fin;
 
+  mode = "carte";
+
   constructor(public popup: MatDialog, private managementService: ManagementService) {
   }
 
@@ -42,5 +44,24 @@ export class ManagementBarComponent implements OnInit {
         action:'Ajouter'
       }
     });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`); // Pizza!
+      if (result != 'close' && result != undefined) {
+        console.log('add completed');
+        if (this.mode == 'carte') {
+          // this.managementMap.addAccident(result);
+        } else if (this.mode == 'table') {
+          // this.managementTable.addAccident(result);
+        }
+      }
+    });
+  }
+
+  tableau() {
+    this.mode = 'table';
+  }
+
+  carte() {
+    this.mode = 'carte';
   }
 }
