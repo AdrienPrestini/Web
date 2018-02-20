@@ -60,7 +60,9 @@ export class ManagementMapComponent implements OnInit {
       console.log('Carte filtre');
       this.managementService.getAccidents(date_debut, date_fin, heure_debut, heure_fin, postal).subscribe((res) => {
         for (var i = 0; i < res.length; i++) {
-          res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
+          if (res[i].properties.datetime) {
+            res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
+          }
         }
         this.accidents = res;
         this.accidentsToMarker();
@@ -73,7 +75,9 @@ export class ManagementMapComponent implements OnInit {
       console.log('Carte proximite');
       this.managementService.getAccidentsProche(long, lat, distance).subscribe((res) => {
         for (var i = 0; i < res.length; i++) {
-          res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
+          if (res[i].properties.datetime) {
+            res[i].properties.datetime = res[i].properties.datetime.substring(0, 10);
+          }
         }
         this.accidents = res;
         this.accidentsToMarker();
@@ -110,14 +114,16 @@ export class ManagementMapComponent implements OnInit {
   }
 
   addAccident(id) {
-    this.managementService.getAccident(id).subscribe(result => {
-      this.accidents.push(result);
+    this.managementService.getAccident(id).subscribe((res) => {
+      console.log('size: ' + this.accidents.length);
+      this.accidents.push(res);
       var mark: marker = {
-        lat: result.geometry.coordinates[1],
-        lng: result.geometry.coordinates[0],
-        id: result._id
+        lat: Number(res.geometry.coordinates[1]),
+        lng: Number(res.geometry.coordinates[0]),
+        id: res._id
       };
       this.accidentsMarkers.push(mark);
+      console.log('yes');
     });
   }
 }

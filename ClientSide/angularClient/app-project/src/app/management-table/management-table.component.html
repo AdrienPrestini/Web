@@ -39,12 +39,12 @@
       <td>{{ x._id }}</td>
       <td><span *ngIf="x.geometry">{{ x.geometry.coordinates[0] }}</span></td>
       <td><span *ngIf="x.geometry">{{ x.geometry.coordinates[1] }}</span></td>
-      <td>{{ x.properties.datetime }}</td>
-      <td>{{ x.properties.hrmn }}</td>
-      <td>{{ x.properties.adr }}</td>
-      <td>{{ x.properties.code_postal }}</td>
-      <td>{{ x.properties.nbv }}</td>
-      <td>{{ x.properties.agg }}</td>
+      <td><span *ngIf="x.properties.datetime">{{ x.properties.datetime }}</span></td>
+      <td><span *ngIf="x.properties.hrmn">{{ x.properties.hrmn }}</span></td>
+      <td><span *ngIf="x.properties.adr">{{ x.properties.adr }}</span></td>
+      <td><span *ngIf="x.properties.code_postal">{{ x.properties.code_postal }}</span></td>
+      <td><span *ngIf="x.properties.nbv">{{ x.properties.nbv }}</span></td>
+      <td><span *ngIf="x.properties.agg">{{ x.properties.agg }}</span></td>
       <td><span *ngIf="x.comments">{{ x.comments.length }}</span><span *ngIf="!x.comments">0</span></td>
       <td>
         <span class="glyphicon glyphicon-edit" (click)="edit(i)"></span>

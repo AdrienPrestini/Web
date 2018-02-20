@@ -4,7 +4,7 @@ import { Http, Response } from '@angular/http';
 @Injectable()
 export class ManagementService {
 
-  private url = "http://192.168.137.204:3000/"
+  private url = "http://localhost:3000/"
   private urlGet = this.url + "accidents/departement/5a846515c0ae05d77c22e5fd";
   private urlAccident = this.url + "accidents";
 
@@ -66,6 +66,6 @@ export class ManagementService {
   getAccident(id) {
     var urlRequest = this.urlAccident + "/" + id;
     console.log(urlRequest);
-    return this.http.get(urlRequest);
+    return this.http.get(urlRequest).map((response: Response) => response.json());
   }
 }

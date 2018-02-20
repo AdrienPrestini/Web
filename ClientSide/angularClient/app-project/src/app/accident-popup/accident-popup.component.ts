@@ -96,8 +96,8 @@ export class AccidentPopupComponent implements OnInit {
     if (this.action == 'Ajouter') {
       this.buildJson();
       this.managementService.addAccident(this.accident).subscribe((res) => {
-        console.log('Posting accident: ' + res.text());
-        this.dialogRef.close(res.text());
+        console.log('Posting accident: ' + res.text().replace(new RegExp('"', 'g'), ''));
+        this.dialogRef.close(res.text().replace(new RegExp('"', 'g'),''));
       });
     } else if (this.action == 'Modifier') {
       this.buildJson();

@@ -1,92 +1,97 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<div class="">
-  <div class="jumbotron">
-    <div class="row">
-      <div class="col-xs-8">
-        <h2>
-          Management des accidents
-        </h2>
+<div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-8">
+          <h2>
+            Management des accidents
+          </h2>
+        </div>
+        <div class="col-xs-2" style="margin-top:20px">
+          <button class="btn col-xs-2 btn-block btn-default" type="button" (click)="tableau()" [ngClass]="{ 'btn-primary': mode == 'table' }">
+            Tableau
+          </button>
+        </div>
+        <div class="col-xs-2" style="margin-top:20px">
+          <button class="btn col-xs-2 btn-block btn-default" type="button" (click)="carte()" [ngClass]="{ 'btn-primary': mode == 'carte' }">
+            Carte
+          </button>
+        </div>
       </div>
-      <div class="col-xs-2" style="margin-top:20px">
-        <button class="btn col-xs-2 btn-block btn-default" type="button" (click)="tableau()" [ngClass]="{ 'btn-primary': mode == 'table' }">
-          Tableau
-        </button>
+      <div class="row">
+        <div class="col-xs-2">
+          Date début
+        </div>
+        <div class="col-xs-2">
+          Date fin
+        </div>
+        <div class="col-xs-2">
+          Heure début
+        </div>
+        <div class="col-xs-2">
+          Heure fin
+        </div>
+        <div class="col-xs-2">
+          Code Postal
+        </div>
       </div>
-      <div class="col-xs-2" style="margin-top:20px">
-        <button class="btn col-xs-2 btn-block btn-default" type="button" (click)="carte()" [ngClass]="{ 'btn-primary': mode == 'carte' }">
-          Carte
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-2">
-        Date début
-      </div>
-      <div class="col-xs-2">
-        Date fin
-      </div>
-      <div class="col-xs-2">
-        Heure début
-      </div>
-      <div class="col-xs-2">
-        Heure fin
-      </div>
-      <div class="col-xs-2">
-        Code Postal
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-2">
-        <input type="date" class="form-control" [(ngModel)]="date_debut" />
-      </div>
-      <div class="col-xs-2">
-        <input type="date" class="form-control" [(ngModel)]="date_fin" />
-      </div>
-      <div class="col-xs-2">
-        <input type="time" class="form-control" [(ngModel)]="heure_debut" />
-      </div>
-      <div class="col-xs-2">
-        <input type="time" class="form-control" [(ngModel)]="heure_fin" />
-      </div>
-      <div class="col-xs-2">
-        <input type="text" class="form-control" [(ngModel)]="postal" />
-      </div>
-      <div class="col-xs-2">
-        <button class="btn btn-default" type="button"
-                (click)="managementTable.fillTable(date_debut,date_fin,heure_debut,heure_fin,postal,mode);
+      <div class="row">
+        <div class="col-xs-2">
+          <input type="date" class="form-control" [(ngModel)]="date_debut" />
+        </div>
+        <div class="col-xs-2">
+          <input type="date" class="form-control" [(ngModel)]="date_fin" />
+        </div>
+        <div class="col-xs-2">
+          <input type="time" class="form-control" [(ngModel)]="heure_debut" />
+        </div>
+        <div class="col-xs-2">
+          <input type="time" class="form-control" [(ngModel)]="heure_fin" />
+        </div>
+        <div class="col-xs-2">
+          <input type="text" class="form-control" [(ngModel)]="postal" />
+        </div>
+        <div class="col-xs-2">
+          <button class="btn btn-default" type="button"
+                  (click)="managementTable.fillTable(date_debut,date_fin,heure_debut,heure_fin,postal,mode);
                 managementMap.fillMap(date_debut,date_fin,heure_debut,heure_fin,postal,mode)">
-          Filtrer
-        </button>
+            Filtrer
+          </button>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-xs-2">
-        Rayon de recherche en mètres
+      <div class="row">
+        <div class="col-xs-2">
+          Rayon de recherche en mètres
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-2">
-        <input type="number" class="form-control" [(ngModel)]="distance" />
-      </div>
-      <div class="col-xs-4">
-        <button class="btn btn-default" type="button"
-                (click)="managementTable.fillTableProxi(lng,lat,distance,mode);
+      <div class="row">
+        <div class="col-xs-2">
+          <input type="number" class="form-control" [(ngModel)]="distance" />
+        </div>
+        <div class="col-xs-4">
+          <button class="btn btn-default" type="button"
+                  (click)="managementTable.fillTableProxi(lng,lat,distance,mode);
                 managementMap.fillMapProxi(lng,lat,distance,mode)">
-          Rechercher aux alentours
-        </button>
-      </div>
-      <div class="col-xs-4">
+            Rechercher aux alentours
+          </button>
+        </div>
+        <div class="col-xs-4">
 
-      </div>
-      <div class="col-xs-2">
-        <button class="btn btn-primary" type="button" (click)="ajouterButton()">
-          Ajouter nouvel accident
-        </button>
+        </div>
+        <div class="col-xs-2">
+          <button class="btn btn-primary" type="button" (click)="ajouterButton()">
+            Ajouter nouvel accident
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<app-management-table [ngClass]="{ 'hideComponent': mode != 'table' }" #managementTable></app-management-table>
-<app-management-map [ngClass]="{ 'hideComponent': mode != 'carte' }" #managementMap></app-management-map>
+  <app-management-table [ngClass]="{ 'hideComponent': mode != 'table' }" #managementTable>
 
+  </app-management-table>
+  <app-management-map [ngClass]="{ 'hideComponent': mode != 'carte' }" #managementMap>
+
+  </app-management-map>
+</div>

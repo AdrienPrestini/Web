@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ManagementTableComponent } from '../management-table/management-table.component';
+import { ManagementMapComponent } from '../management-map/management-map.component';
 import { ManagementService } from '../services/management.service';
 import { AccidentPopupComponent } from '../accident-popup/accident-popup.component';
 
@@ -26,6 +27,9 @@ export class ManagementBarComponent implements OnInit {
 
   mode = "carte";
 
+  @ViewChild('managementTable') managementTable: ManagementTableComponent;
+  @ViewChild('managementMap') managementMap: ManagementMapComponent;
+
   constructor(public popup: MatDialog, private managementService: ManagementService) {
   }
 
@@ -49,9 +53,10 @@ export class ManagementBarComponent implements OnInit {
       if (result != 'close' && result != undefined) {
         console.log('add completed');
         if (this.mode == 'carte') {
-          // this.managementMap.addAccident(result);
+          this.managementMap.addAccident(result);
         } else if (this.mode == 'table') {
-          // this.managementTable.addAccident(result);
+          console.log('goAdd table');
+          this.managementTable.addAccident(result);
         }
       }
     });
