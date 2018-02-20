@@ -30,7 +30,7 @@ Des versions supérieures peuvent bien sûr être utilisées
 
 ### Côté Serveur
 
-Pour installer l'application serveur, il faut en tout premier initialiser la base de donnée. Pour cela, commencez par allumer votre base MongoDB dans un terminal indépendant :
+Pour installer l'application serveur, il faut en tout premier initialiser la base de donnée. Pour cela, commencez par allumer votre base MongoDB dans un terminal indépendant (n'oubliez pas de créer le dossier _C:/data/db_ ou utilisez le praramètre _--dbpath=\<votre-chemin\>_) :
 ```
 $ mongod
 ```
@@ -53,6 +53,11 @@ Il ne vous reste plus qu'à lancer le serveur à l'aide de la commande
 $ npm start
 ```
 Notre client communique avec le serveur à travers l'URL http://localhost:3000/ mais un autre client REST (comme Postman) peut également y envoyer des requêtes.
+
+Pour lancer les tests du serveur, exécutez la commande :
+```
+$ npm test
+```
 
 
 ### Côté Client
