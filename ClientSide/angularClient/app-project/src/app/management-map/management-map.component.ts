@@ -32,7 +32,7 @@ export class ManagementMapComponent implements OnInit {
     }
   }
 
-  mapClicked($event: MouseEvent) {
+  mapClicked($event: any) {
     console.log('Add accident');
     let dialogRef = this.popup.open(AccidentPopupComponent, {
       data: {

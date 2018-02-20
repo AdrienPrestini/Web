@@ -15,6 +15,7 @@ export class AccidentPopupComponent implements OnInit {
   modifier = null;
 
   accident;
+  
   /*
     accident = {
     _id: null, geometry: { coordinates: [] },
@@ -85,12 +86,11 @@ export class AccidentPopupComponent implements OnInit {
     this.bool_heure = true;
     this.bool_lieu = true;
     this.bool_nbv = true;
-    console.log(this.longitude);
-    if (this.longitude == undefined || this.longitude == null || this.longitude == '' ) {
+    if (this.longitude == undefined || this.longitude == null) {
       result = false;
       this.bool_longitude = false;
     }
-    if (this.latitude == undefined || this.latitude == null || this.latitude == '' ) {
+    if (this.latitude == undefined || this.latitude == null) {
       result = false;
       this.bool_latitude = false;
     }

@@ -6,11 +6,11 @@
     <div class="row">
       <div class="col-xs-0"></div>
       <div class="col-xs-6">
-        Longitude <input type="text" class="form-control"
+        Longitude <input type="number" class="form-control"
                          [(ngModel)]="longitude" [ngClass]="{ 'alert-danger': bool_longitude == false }"/>
       </div>
       <div class="col-xs-6">
-        Latitude <input type="text" class="form-control"
+        Latitude <input type="number" class="form-control"
                         [(ngModel)]="latitude" [ngClass]="{ 'alert-danger': bool_latitude == false }" />
       </div>
       <div class="col-xs-0"></div>
@@ -46,7 +46,7 @@
                     [(ngModel)]="lieu" />
       </div>
       <div class="col-xs-6">
-        Nombre de véhicule <input type="text" class="form-control"
+        Nombre de véhicule <input type="number" class="form-control"
                                   [(ngModel)]="nbv"  [ngClass]="{ 'alert-danger': bool_nbv == false }"/>
       </div>
       <div class="col-xs-0"></div>

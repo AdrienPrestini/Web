@@ -115,6 +115,7 @@ describe('Accidents', () => {
                         "datetime" : "2015-09-16T09:45:00+02:00", 
                         "adr" : "06 rue du 06", 
                         "nbv" : 7, 
+                        "agg": "En agglomération",
                         "code_postal" : "06410", 
                         "coord" : [ 47.95, 5.78 ], 
                         "hrmn" : "12:45" 
@@ -132,6 +133,7 @@ describe('Accidents', () => {
                             res.body.properties.should.have.property('nbv').eql(7);
                             res.body.properties.should.have.property('code_postal').eql("06410");
                             res.body.properties.should.have.property('hrmn').eql("12:45");
+                            res.body.properties.should.have.property('agg').eql("En agglomération");
                             res.body.properties.coord[1].should.be.eql(5.78);
                             res.body.properties.coord[0].should.be.eql(47.95);
                             done();
