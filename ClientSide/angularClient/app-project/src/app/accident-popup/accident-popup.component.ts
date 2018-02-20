@@ -34,6 +34,15 @@ export class AccidentPopupComponent implements OnInit {
   @Input() lieu: string;
   @Input() nbv: number;
 
+  bool_longitude: boolean = true;
+  bool_latitude: boolean = true;
+  bool_postal: boolean = true;
+  bool_adresse: boolean = true;
+  bool_date: boolean = true;
+  bool_heure: boolean = true;
+  bool_lieu: boolean = true;
+  bool_nbv: boolean = true;
+
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, private managementService: ManagementService, public dialogRef: MatDialogRef<AccidentPopupComponent>) {
     this.action = data.action;
     if (this.action == 'Ajouter') {
@@ -66,6 +75,49 @@ export class AccidentPopupComponent implements OnInit {
     }
   }
 
+  checkFields() {
+    var result = true;
+    this.bool_longitude = true;
+    this.bool_latitude = true;
+    this.bool_postal = true;
+    this.bool_adresse = true;
+    this.bool_date = true;
+    this.bool_heure = true;
+    this.bool_lieu = true;
+    this.bool_nbv = true;
+    console.log(this.longitude);
+    if (this.longitude == undefined || this.longitude == null || this.longitude == '' ) {
+      result = false;
+      this.bool_longitude = false;
+    }
+    if (this.latitude == undefined || this.latitude == null || this.latitude == '' ) {
+      result = false;
+      this.bool_latitude = false;
+    }
+    if (this.date == undefined || this.date == null) {
+      result = false;
+      this.bool_date = false;
+    }
+    if (this.nbv == undefined) {
+      result = false;
+      this.bool_nbv = false;
+    }
+    if (this.heure == undefined || this.heure == "" || this.date == null) {
+      result = false;
+      this.bool_heure = false;
+    }
+    if (this.adresse == undefined || this.adresse == "") {
+      result = false;
+      this.bool_adresse = false;
+    }
+    if (this.postal == undefined || this.postal == "") {
+      result = false;
+      this.bool_postal = false;
+    }
+
+    return result;
+  }
+
   buildJson() {
 
     if (this.action == 'Ajouter') {
@@ -93,6 +145,10 @@ export class AccidentPopupComponent implements OnInit {
 
   applyAction() {
     console.log(this.action);
+    if (!this.checkFields()) {
+      return;
+    }
+
     if (this.action == 'Ajouter') {
       this.buildJson();
       this.managementService.addAccident(this.accident).subscribe((res) => {
