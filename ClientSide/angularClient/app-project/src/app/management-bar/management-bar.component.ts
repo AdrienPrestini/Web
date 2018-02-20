@@ -53,6 +53,7 @@ export class ManagementBarComponent implements OnInit {
       if (result != 'close' && result != undefined) {
         console.log('add completed');
         if (this.mode == 'carte') {
+          console.log('goAdd map');
           this.managementMap.addAccident(result);
         } else if (this.mode == 'table') {
           console.log('goAdd table');

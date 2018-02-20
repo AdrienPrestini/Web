@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material';
 })
 export class ManagementMapComponent implements OnInit {
 
-  accidents;
+  accidents = [];
 
   accidentsMarkers :marker[] = [];
   latitudeCenter:number = 51.678418;;
@@ -39,6 +39,13 @@ export class ManagementMapComponent implements OnInit {
         action: 'Ajouter',
         lat: $event.coords.lat,
         lng: $event.coords.lng
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`); // Pizza!
+      if (result != 'close' && result != undefined) {
+          console.log('goAdd map');
+          this.addAccident(result);
       }
     });
   }
