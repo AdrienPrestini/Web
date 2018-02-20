@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { AppSettings } from '../AppSettings';
 
 @Injectable()
 export class ManagementService {
 
-  private url = "http://localhost:3000/"
+  private url = AppSettings.ACCIDENT_SERVER_URL;
   private urlGet = this.url + "accidents/departement/5a846515c0ae05d77c22e5fd";
   private urlAccident = this.url + "accidents";
 

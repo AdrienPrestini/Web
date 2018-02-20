@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { AppSettings } from './AppSettings';
 
 @Injectable()
 export class LoaderService {
 
   constructor(private http:Http) { }
 
-  private url = "http://localhost:3000/";
+  private url = AppSettings.ACCIDENT_SERVER_URL;
 //accidents?latstart=43.692887&lngstart=7.249432&latend=45.162432&lngend=5.715637
   async getAccidents(): Promise<any>{
     //return await this.http.get(this.url).map((response : Response) => response.json());
