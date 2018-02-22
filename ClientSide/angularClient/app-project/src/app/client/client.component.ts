@@ -186,14 +186,26 @@ export class ClientComponent implements OnInit {
         //on remplit les marqueurs 
         res.forEach(element => {
           //ajouter l'accident dans la liste this.accidents
-          this.markersAccidents.push({
-            lat: element.properties.coordonnees[0],
-            lng: element.properties.coordonnees[1],
-            etat: element.properties.adr + ", " + element.properties.agg,
-            label: '!',
-            draggable: false,
-            id: element._id
-          });
+          if(element.properties.coordonnees == undefined){
+            this.markersAccidents.push({
+                lat: element.properties.coord[0],
+                lng: element.properties.coord[1],
+                etat: element.properties.adr + ", " + element.properties.agg,
+                label: '!',
+                draggable: false,
+                id: element._id
+              });
+          }else {
+            this.markersAccidents.push({
+                lat: element.properties.coordonnees[0],
+                lng: element.properties.coordonnees[1],
+                etat: element.properties.adr + ", " + element.properties.agg,
+                label: '!',
+                draggable: false,
+                id: element._id
+              });
+          }
+          
           this.accidents.push({
             adr: element.properties.adr,
             agg: element.properties.agg,
@@ -219,14 +231,25 @@ export class ClientComponent implements OnInit {
       //on remplit les marqueurs 
       res.dangerPoint.forEach(element => {
         //ajouter l'accident dans la liste this.accidents
-        this.markersAccidents.push({
-          lat: element.properties.coordonnees[0],
-          lng: element.properties.coordonnees[1],
-          etat: element.properties.adr + ", " + element.properties.agg,
-          label: '!',
-          draggable: false,
-          id: element._id
-        });
+        if(element.properties.coordonnees == undefined){
+            this.markersAccidents.push({
+                lat: element.properties.coord[0],
+                lng: element.properties.coord[1],
+                etat: element.properties.adr + ", " + element.properties.agg,
+                label: '!',
+                draggable: false,
+                id: element._id
+              });
+          }else {
+            this.markersAccidents.push({
+                lat: element.properties.coordonnees[0],
+                lng: element.properties.coordonnees[1],
+                etat: element.properties.adr + ", " + element.properties.agg,
+                label: '!',
+                draggable: false,
+                id: element._id
+              });
+          }
         this.accidents.push({
           adr: element.properties.adr,
           agg: element.properties.agg,
